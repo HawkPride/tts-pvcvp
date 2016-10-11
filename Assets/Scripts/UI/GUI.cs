@@ -28,15 +28,6 @@ public class GUI : MonoBehaviour
 
   public static void MessageBox(Canvas target, string message)
   {
-    GUI gui = Instance();
-
-    if (!gui.m_dlgMessageBox)
-      return;
-
-    GameObject msgBox = GameObject.Instantiate<GameObject>(gui.m_dlgMessageBox);
-    msgBox.transform.SetParent(target.transform, false);
-    Text txt = msgBox.GetComponentInChildren<Text>();
-    txt.text = message;
-    //msgBox.GetComponent<Anima>()
+    global::MessageBox.Create(target, message, global::MessageBox.EType.OK);
   }
 }
