@@ -3,52 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BlockRendererGlass : BlockRendererBase
+namespace GUI
 {
-  public Glass      m_glass;
-  public Text       m_pointsText;
-
-
-  //-----------------------------------------------------------------------------------
-  // Update is called once per frame
-  //-----------------------------------------------------------------------------------
-  protected override void UpdateImpl()
+  public class BlockRendererGlass : BlockRendererBase
   {
-    //TODO: Move to Callback form glass
-    if (!m_glass || !m_block)
-      return;
+    public Glass      m_glass;
+    public Text       m_pointsText;
 
-    RectTransform tf = GetComponent<RectTransform>();
 
-    var field = m_glass.Field;
-    float fCenterX = m_glass.m_nSizeX/2.0f;
-    float fCenterY = m_glass.m_nSizeY/2.0f;
-    float fSizeX = tf.rect.width/m_glass.m_nSizeX;
-    float fSizeY = tf.rect.height/m_glass.m_nSizeY;
-    for (int x = 0; x < m_glass.m_nSizeX; x++)
+    //-----------------------------------------------------------------------------------
+    // Update is called once per frame
+    //-----------------------------------------------------------------------------------
+    protected override void UpdateImpl()
     {
-      for (int y = 0; y < m_glass.m_nSizeY; y++)
+      //TODO: Move to Callback form glass
+      if (!m_glass || !m_block)
+        return;
+
+      RectTransform tf = GetComponent<RectTransform>();
+
+      var field = m_glass.Field;
+      float fCenterX = m_glass.m_nSizeX/2.0f;
+      float fCenterY = m_glass.m_nSizeY/2.0f;
+      float fSizeX = tf.rect.width/m_glass.m_nSizeX;
+      float fSizeY = tf.rect.height/m_glass.m_nSizeY;
+      for (int x = 0; x < m_glass.m_nSizeX; x++)
       {
-        Block fieldBlock = field[x, y];
-        if (fieldBlock != null)
+        for (int y = 0; y < m_glass.m_nSizeY; y++)
         {
-          GameObject block = GetNextBlock();
-          //Vector3 vPos = new Vector3(fSizeX*(x - fCenterX), fSizeY*(y - fCenterY), 0.0f);
+          Block fieldBlock = field[x, y];
+          if (fieldBlock != null)
+          {
+            GameObject block = GetNextBlock();
+            //Vector3 vPos = new Vector3(fSizeX*(x - fCenterX), fSizeY*(y - fCenterY), 0.0f);
 
-          RectTransform btf = block.GetComponent<RectTransform>();
+            RectTransform btf = block.GetComponent<RectTransform>();
 
-          btf.anchoredPosition = new Vector3(fSizeX*(x - fCenterX), fSizeY*(y - fCenterY));
-          btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fSizeX);
-          btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fSizeY);
-          if (fieldBlock.m_eType == Block.EType.COLLAPSING)
-            block.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
-          else
-            block.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+            btf.anchoredPosition = new Vector3(fSizeX * (x - fCenterX), fSizeY * (y - fCenterY));
+            btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fSizeX);
+            btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fSizeY);
+            if (fieldBlock.m_eType == Block.EType.COLLAPSING)
+              block.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
+            else
+              block.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+          }
         }
       }
-    }
 
-    if (m_pointsText)
-      m_pointsText.text = m_glass.Points.ToString();
+      if (m_pointsText)
+        m_pointsText.text = m_glass.Points.ToString();
+    }
   }
 }

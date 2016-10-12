@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HoldableButton : MonoBehaviour
+namespace GUI
 {
-  public void Start()
+  public class HoldableButton : MonoBehaviour
   {
-  }
+    //-----------------------------------------------------------------------------------
+    public void Start()
+    {
+    }
 
-  public void Update()
-  {
-  }
+    //-----------------------------------------------------------------------------------
+    public void Update()
+    {
+    }
 
+  }
 }

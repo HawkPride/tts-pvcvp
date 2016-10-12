@@ -1,72 +1,85 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine.Events;
 
-public class MessageBox : MonoBehaviour
+namespace GUI
 {
-  public enum EType
+
+  public class MessageBox : UILayout
   {
-    OK,
-    OK_CANCEL,
-    YES_NO,
-  };
+    public enum EType
+    {
+      OK,
+      OK_CANCEL,
+      YES_NO,
+    };
 
-  public delegate void CallbackYes();
-  public delegate void CallbackNo ();
-
-  private GameObject  m_dialog;
-  private CallbackYes m_listenerYes;
-  private CallbackNo  m_listenerNo;
-  private EType       m_eType;
-
+    //Interface
+    public UnityEngine.UI.Text    m_txtMessage;
+    public UnityEngine.UI.Button  m_btnYes;
+    public UnityEngine.UI.Button  m_btnNo;
 
 
-  public static void Create(Canvas pParent, string strMessage, EType eType, CallbackYes delYes = null, CallbackNo delNo = null)
-  {
-    GUI gui = GUI.Instance();
+    //Vars
+    private EType         m_eType;
 
-    if (!gui.m_dlgMessageBox)
-      return;
+    //-----------------------------------------------------------------------------------
+    public static void Create(Canvas pParent, string strMessage, EType eType, UnityAction delYes = null, UnityAction delNo = null)
+    {
+      UserInterface gui = UserInterface.Instance();
 
-    GameObject obj = GameObject.Instantiate<GameObject>(gui.m_dlgMessageBox);
-    obj.transform.SetParent(pParent.transform, false);
-    MessageBox msgBox = obj.GetComponentInChildren<MessageBox>();
-    if (!msgBox)
-      return;
+      if (!gui.m_dlgMessageBox)
+        return;
 
-    msgBox.m_dialog = obj;
-    UnityEngine.UI.Text txt = msgBox.GetComponentInChildren<UnityEngine.UI.Text>();
-    txt.text = strMessage;
+      GameObject obj = GameObject.Instantiate<GameObject>(gui.m_dlgMessageBox);
+      obj.transform.SetParent(pParent.transform, false);
+      MessageBox msgBox = obj.GetComponentInChildren<MessageBox>();
+      if (!msgBox)
+        return;
+      msgBox.Init(strMessage, eType, delYes, delNo);
+    }
 
-    if (delYes != null)
-      msgBox.m_listenerYes  = delYes;
-    if (delNo != null)
-      msgBox.m_listenerNo   = delNo;
-  }
+    //-----------------------------------------------------------------------------------
+    void Init(string strMessage, EType eType, UnityAction delYes, UnityAction delNo)
+    {
+      if (m_txtMessage != null)
+        m_txtMessage.text = strMessage;
 
-  // Use this for initialization
-  void Start()
-  {
+      m_eType = eType;
 
-  }
+      if (m_btnYes != null)
+      {
+        if (delYes != null)
+          m_btnYes.onClick.AddListener(delYes);
+        m_btnYes.onClick.AddListener(OnButton);
+      }
+      if (m_btnNo != null)
+      {
+        if (delNo != null)
+          m_btnNo.onClick.AddListener(delNo);
+        m_btnNo.onClick.AddListener(OnButton);
+      }
+    }
 
-  // Update is called once per frame
-  void Update()
-  {
+    // Use this for initialization
+    //-----------------------------------------------------------------------------------
+    void Start()
+    {
 
-  }
+    }
 
-  public void OnYes()
-  {
-    if (m_listenerYes != null)
-      m_listenerYes();
+    // Update is called once per frame
+    //-----------------------------------------------------------------------------------
+    void Update()
+    {
 
-    Destroy(m_dialog);
-  }
+    }
 
-  public void OnNo()
-  {
-    if (m_listenerNo != null)
-      m_listenerNo();
-    Destroy(m_dialog);
+    //-----------------------------------------------------------------------------------
+    public void OnButton()
+    {
+      DeleteLayout();
+    }
   }
 }

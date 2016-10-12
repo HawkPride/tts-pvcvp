@@ -26,12 +26,14 @@ public class InputProvider : MonoBehaviour
   public float        m_fInputRepeat    = 0.1f;
 
   // Use this for initialization
+  //-----------------------------------------------------------------------------------
   public void Start()
   {
     m_timer = new TimeInterval(m_fInputRepeat);
   }
 
   // Update is called once per frame
+  //-----------------------------------------------------------------------------------
   public void Update()
   {
     float fX = Input.GetAxis("Horizontal");
@@ -75,6 +77,7 @@ public class InputProvider : MonoBehaviour
     m_nCurrInputFlags = nInputFlags;
   }
 
+  //-----------------------------------------------------------------------------------
   public void OnInputUiButtonClick(int nFlag)
   {
     /*
@@ -84,10 +87,13 @@ public class InputProvider : MonoBehaviour
     */
   }
 
+  //-----------------------------------------------------------------------------------
   public void OnInputUiButtonDown(int nFlag)
   {
     m_nCurrButtonFlags |= nFlag;
   }
+
+  //-----------------------------------------------------------------------------------
   public void OnInputUiButtonUp( int nFlag )
   {
     m_nCurrButtonFlags &= ~nFlag;
