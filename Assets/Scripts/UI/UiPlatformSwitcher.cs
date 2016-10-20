@@ -38,9 +38,7 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     void Show(bool bFlag)
     {
-      Canvas obj = GetComponent<Canvas>();
-      if (obj)
-        obj.enabled = bFlag;
+      gameObject.SetActive(bFlag);
     }
   }
 }
