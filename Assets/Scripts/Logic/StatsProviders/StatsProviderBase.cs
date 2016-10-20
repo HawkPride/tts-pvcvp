@@ -2,10 +2,11 @@
 
 public abstract class StatsProviderBase
 {
+  [Serializable]
   public struct Stats
   {
-    string  m_strPlayerName;
-    int     m_nScore;
+    public string  m_strPlayerName;
+    public int     m_nScore;
   };
 
   abstract public Stats[]   GetCurStats (int nStartIndex, int nCount);

@@ -52,7 +52,11 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     public void OnTest()
     {
-
+      StatsProviderBase sp = new StatsProviderLocal();
+      StatsProviderBase.Stats stats = new StatsProviderBase.Stats();
+      stats.m_strPlayerName = "Hawk";
+      stats.m_nScore = 100;
+      sp.AddStats(stats);
     }
   }
 }
