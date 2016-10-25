@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace GUI
 {
 
-  public class MessageBox : UILayout
+  public class MessageBox : UIGameState
   {
     public enum EType
     {
@@ -60,6 +60,13 @@ namespace GUI
           m_btnNo.onClick.AddListener(delNo);
         m_btnNo.onClick.AddListener(OnButton);
       }
+    }
+
+
+    //-----------------------------------------------------------------------------------
+    public override EGameState GetStateType()
+    {
+      return EGameState.MESSAGE_BOX;
     }
 
     // Use this for initialization

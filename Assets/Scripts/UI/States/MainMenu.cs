@@ -5,10 +5,17 @@ using UnityEngine.SceneManagement;
 namespace GUI
 {
 
-  public class MainMenu : MonoBehaviour
+  public class MainMenu : UIGameState
   {
 
     public Canvas m_cnvScreen;
+
+
+    //-----------------------------------------------------------------------------------
+    public override EGameState GetStateType()
+    {
+      return EGameState.MAIN_MENU;
+    }
 
     // Use this for initialization
     //-----------------------------------------------------------------------------------
@@ -25,16 +32,17 @@ namespace GUI
 
     }
 
+
     //-----------------------------------------------------------------------------------
     public void OnPlay()
     {
-      SceneManager.LoadScene("GameSingle");
+      UserInterface.Instance().SwitchToState(EGameState.GAME_SINGLE);
     }
 
     //-----------------------------------------------------------------------------------
     public void OnScore()
     {
-      MessageBox.Create(m_cnvScreen, "HELLO WORLD", MessageBox.EType.OK, OnTest);
+      UserInterface.Instance().SwitchToState(EGameState.PLAYER_SCORE);
     }
 
     //-----------------------------------------------------------------------------------
@@ -58,5 +66,6 @@ namespace GUI
       stats.m_nScore = 100;
       sp.AddStats(stats);
     }
+
   }
 }

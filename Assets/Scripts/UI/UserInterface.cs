@@ -4,13 +4,19 @@ using UnityEngine.UI;
 
 namespace GUI
 {
+
+
   public class UserInterface : MonoBehaviour
   {
     static UserInterface s_gui;
-
-    public string     m_strStartScene;
+    
     public GameObject m_dlgMessageBox;
 
+    //-----------------------------------------------------------------------------------
+    public static UserInterface Instance()
+    {
+      return s_gui;
+    }
 
     //-----------------------------------------------------------------------------------
     void Awake()
@@ -22,13 +28,35 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     void Start()
     {
-      SceneManager.LoadScene(m_strStartScene);
+      SwitchToState(EGameState.MAIN_MENU);
+      
     }
 
     //-----------------------------------------------------------------------------------
-    public static UserInterface Instance()
+    public void SwitchToState(EGameState eState)
     {
-      return s_gui;
+      string strSceneName = "";
+      switch (eState)
+      {
+      case EGameState.MAIN_MENU:
+        strSceneName = "MainMenu";
+        break;
+      case EGameState.GAME_SINGLE:
+        strSceneName = "GameSingle";
+        break;
+      case EGameState.PLAYER_SCORE:
+        strSceneName = "PlayerScore";
+        break;
+      case EGameState.MESSAGE_BOX:
+        strSceneName = "PopUp";
+        break;
+      }
+
+      if (strSceneName.Length > 0)
+        SceneManager.LoadScene(strSceneName);
+      //else
+      //  Logger
     }
+
   }
 }

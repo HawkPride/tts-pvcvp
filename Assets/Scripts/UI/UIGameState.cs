@@ -3,9 +3,18 @@ using System.Collections;
 
 namespace GUI
 {
-
-  public class UILayout : MonoBehaviour
+  public enum EGameState
   {
+    MAIN_MENU,
+    GAME_SINGLE,
+    PLAYER_SCORE,
+    MESSAGE_BOX,
+  }
+
+  public abstract class UIGameState : MonoBehaviour
+  {
+    public abstract EGameState GetStateType();
+
 
     // Use this for initialization
     //-----------------------------------------------------------------------------------
