@@ -27,12 +27,11 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     public static void Create(Canvas pParent, string strMessage, EType eType, UnityAction delYes = null, UnityAction delNo = null)
     {
-      UserInterface gui = UserInterface.Instance();
-
-      if (!gui.m_dlgMessageBox)
+      var config = Game.Instance.GetConfig();
+      if (!config.dlgMessageBox)
         return;
 
-      GameObject obj = GameObject.Instantiate<GameObject>(gui.m_dlgMessageBox);
+      GameObject obj = GameObject.Instantiate<GameObject>(config.dlgMessageBox);
       obj.transform.SetParent(pParent.transform, false);
       MessageBox msgBox = obj.GetComponentInChildren<MessageBox>();
       if (!msgBox)
@@ -69,24 +68,23 @@ namespace GUI
       return EGameState.MESSAGE_BOX;
     }
 
-    // Use this for initialization
     //-----------------------------------------------------------------------------------
-    void Start()
+    public override void OnStart()
     {
 
     }
 
-    // Update is called once per frame
     //-----------------------------------------------------------------------------------
-    void Update()
+    public override void OnUpdate()
     {
+
 
     }
 
     //-----------------------------------------------------------------------------------
     public void OnButton()
     {
-      DeleteLayout();
+      DeleteGameState();
     }
   }
 }

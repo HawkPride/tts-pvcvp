@@ -11,24 +11,23 @@ namespace GUI
       return EGameState.PLAYER_SCORE;
     }
 
-    // Use this for initialization
     //-----------------------------------------------------------------------------------
-    void Start()
+    public override void OnStart()
     {
 
     }
 
-    // Update is called once per frame
     //-----------------------------------------------------------------------------------
-    void Update()
+    public override void OnUpdate()
     {
+
 
     }
 
     //-----------------------------------------------------------------------------------
     public void OnButtonOk()
     {
-      UserInterface.Instance().SwitchToState(EGameState.MAIN_MENU);
+      Game.Instance.Ui.SwitchToState(EGameState.MAIN_MENU);
     }
   }
 

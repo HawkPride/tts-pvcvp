@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace GUI
 {
-  public class UiPlatformSwitcher : MonoBehaviour
+  public class UIPlatformSwitcher : MonoBehaviour
   {
     public bool m_bAndroid  = false;
     public bool m_bIos      = false;

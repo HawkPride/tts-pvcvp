@@ -13,7 +13,7 @@ public class StatsProviderLocal
   Stats[]   m_arCurrRecords = new Stats[MAX_STORED_RECORDS];
 
   //-----------------------------------------------------------------------------------
-  override public Stats[] GetCurStats(int nStartIndex, int nCount)
+  public override Stats[] GetCurStats(int nStartIndex, int nCount)
   {
     //var res = new Stats[256];
     //int nSize = res.GetLength(0);
@@ -24,7 +24,7 @@ public class StatsProviderLocal
   }
 
   //-----------------------------------------------------------------------------------
-  override public void AddStats(Stats stats)
+  public override void AddStats(Stats stats)
   {
     Load();
     Array.Sort(m_arCurrRecords, (x, y) => 

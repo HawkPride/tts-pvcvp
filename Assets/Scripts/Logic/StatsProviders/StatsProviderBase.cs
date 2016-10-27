@@ -9,6 +9,6 @@ public abstract class StatsProviderBase
     public int     m_nScore;
   };
 
-  abstract public Stats[]   GetCurStats (int nStartIndex, int nCount);
-  abstract public void      AddStats    (Stats stats);
+  public abstract Stats[]   GetCurStats (int nStartIndex, int nCount);
+  public abstract void      AddStats    (Stats stats);
 }

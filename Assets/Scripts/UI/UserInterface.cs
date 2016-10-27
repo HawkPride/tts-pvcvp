@@ -6,29 +6,12 @@ namespace GUI
 {
 
 
-  public class UserInterface : MonoBehaviour
+  public class UserInterface
   {
-    static UserInterface s_gui;
-    
-    public GameObject m_dlgMessageBox;
 
     //-----------------------------------------------------------------------------------
-    public static UserInterface Instance()
+    public void Init()
     {
-      return s_gui;
-    }
-
-    //-----------------------------------------------------------------------------------
-    void Awake()
-    {
-      s_gui = this;
-      DontDestroyOnLoad(gameObject);
-    }
-
-    //-----------------------------------------------------------------------------------
-    void Start()
-    {
-      SwitchToState(EGameState.MAIN_MENU);
       
     }
 
@@ -55,7 +38,7 @@ namespace GUI
       if (strSceneName.Length > 0)
         SceneManager.LoadScene(strSceneName);
       //else
-      //  Logger
+      //TODO: error
     }
 
   }

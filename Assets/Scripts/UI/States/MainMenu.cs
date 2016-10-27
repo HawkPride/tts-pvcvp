@@ -8,27 +8,22 @@ namespace GUI
   public class MainMenu : UIGameState
   {
 
-    public Canvas m_cnvScreen;
-
-
     //-----------------------------------------------------------------------------------
     public override EGameState GetStateType()
     {
       return EGameState.MAIN_MENU;
     }
 
-    // Use this for initialization
     //-----------------------------------------------------------------------------------
-    void Start()
+    public override void OnStart()
     {
-
+      
     }
 
-    // Update is called once per frame
     //-----------------------------------------------------------------------------------
-    void Update()
+    public override void OnUpdate()
     {
-
+      
 
     }
 
@@ -36,19 +31,19 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     public void OnPlay()
     {
-      UserInterface.Instance().SwitchToState(EGameState.GAME_SINGLE);
+      Game.Instance.Ui.SwitchToState(EGameState.GAME_SINGLE);
     }
 
     //-----------------------------------------------------------------------------------
     public void OnScore()
     {
-      UserInterface.Instance().SwitchToState(EGameState.PLAYER_SCORE);
+      Game.Instance.Ui.SwitchToState(EGameState.PLAYER_SCORE);
     }
 
     //-----------------------------------------------------------------------------------
     public void OnSettings()
     {
-
+      MessageBox.Create(GetCanvas(), "Hello world", MessageBox.EType.OK, OnTest);
     }
 
     //-----------------------------------------------------------------------------------
