@@ -14,7 +14,7 @@ namespace GUI
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
       m_scrollRect = GetComponent<ScrollRect>();
       if (m_scrollRect)
