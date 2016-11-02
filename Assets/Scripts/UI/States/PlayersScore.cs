@@ -5,6 +5,8 @@ namespace GUI
 {
   public class PlayersScore : UIGameState
   {
+    public DynamicScrollView m_scrollView;
+
     //-----------------------------------------------------------------------------------
     public override EGameState GetStateType()
     {
@@ -14,7 +16,15 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
+      for (int i = 0; i < 10; i++)
+      {
+        StatsProviderBase.Stats rec;
+        rec.m_strPlayerName = "blah";
+        rec.m_nScore = i * 10;
 
+        PlayersScoreItem item = m_scrollView.AddListItem().GetComponent<PlayersScoreItem>();
+        item.Set(rec);
+      }
     }
 
     //-----------------------------------------------------------------------------------

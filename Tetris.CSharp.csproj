@@ -76,6 +76,8 @@
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererBase.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererGlass.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererPreview.cs" />
+    <Compile Include="Assets\Scripts\UI\Elements\DynamicScrollView.cs" />
+    <Compile Include="Assets\Scripts\UI\Elements\PlayersScoreItem.cs" />
     <Compile Include="Assets\Scripts\UI\HoldableButton.cs" />
     <Compile Include="Assets\Scripts\UI\States\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\States\MessageBox.cs" />
