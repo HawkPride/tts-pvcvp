@@ -29,18 +29,13 @@ namespace GUI.States
     {
       if (Game.Instance.GameResults == null)
       {
-        //Show the stored score
-        for (int i = 0; i < 10; i++)
+        StatsProviderBase sp = new StatsProviderLocal();
+        sp.Load();
+        var res = sp.GetCurStats(0, 7);
+        for (int i = 0; i < res.Count; i++)
         {
-          StatsProviderBase.Stats rec;
-          rec.m_strPlayerName = "blah";
-          rec.m_nScore = i * 10;
-
           PlayersScoreItem item = m_scrollView.AddListItem().GetComponent<PlayersScoreItem>();
-          if (i % 2 == 0)
-            item.Set(rec);
-          else
-            item.SetAsInput(rec);
+          item.Set(res[i]);
         }
       }
       else

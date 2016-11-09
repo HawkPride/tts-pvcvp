@@ -63,10 +63,14 @@ namespace GUI.States
     public void OnTest()
     {
       StatsProviderBase sp = new StatsProviderLocal();
-      StatsProviderBase.Stats stats = new StatsProviderBase.Stats();
-      stats.m_strPlayerName = "Hawk";
-      stats.m_nScore = 100;
-      sp.AddStats(stats);
+      for (int i = 0; i < 15; i++)
+      {
+        StatsProviderBase.Stats stats = new StatsProviderBase.Stats();
+        stats.m_strPlayerName = "Hawk" + i.ToString();
+        stats.m_nScore = Random.Range(10, 100);
+        sp.AddStats(stats);
+      }
+      sp.Save();
     }
 
   }

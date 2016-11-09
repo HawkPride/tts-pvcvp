@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public abstract class StatsProviderBase
 {
@@ -9,6 +10,8 @@ public abstract class StatsProviderBase
     public int     m_nScore;
   };
 
-  public abstract Stats[]   GetCurStats (int nStartIndex, int nCount);
-  public abstract void      AddStats    (Stats stats);
+  public abstract List<Stats> GetCurStats (int nStartIndex, int nCount);
+  public abstract bool        AddStats    (Stats stats);
+  public abstract bool        Load        ();
+  public abstract bool        Save        ();
 }
