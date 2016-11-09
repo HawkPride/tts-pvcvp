@@ -2,11 +2,19 @@
 using System;
 using System.Collections;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-namespace GUI
+namespace GUI.States
 {
+  //Creation params
+  public class MessageBoxParams : GameStateParams
+  {
+    public override string GetSceneName() { return "PopUp"; }
+    public override EGameStateType GetStateType() { return EGameStateType.MESSAGE_BOX; }
+  }
 
-  public class MessageBox : UIGameState
+
+  public class MessageBox : GameState
   {
     public enum EType
     {
@@ -16,9 +24,9 @@ namespace GUI
     };
 
     //Interface
-    public UnityEngine.UI.Text    m_txtMessage;
-    public UnityEngine.UI.Button  m_btnYes;
-    public UnityEngine.UI.Button  m_btnNo;
+    public Text    m_txtMessage;
+    public Button  m_btnYes;
+    public Button  m_btnNo;
 
 
     //Vars
@@ -63,9 +71,9 @@ namespace GUI
 
 
     //-----------------------------------------------------------------------------------
-    public override EGameState GetStateType()
+    public override EGameStateType GetStateType()
     {
-      return EGameState.MESSAGE_BOX;
+      return EGameStateType.MESSAGE_BOX;
     }
 
     //-----------------------------------------------------------------------------------

@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
-namespace GUI
+namespace GUI.States
 {
+  //Creation params
+  public class MainMenuParams : GameStateParams
+  {
+    public override string GetSceneName() { return "MainMenu"; }
+    public override EGameStateType GetStateType() { return EGameStateType.MAIN_MENU; }
+  }
 
-  public class MainMenu : UIGameState
+
+
+  public class MainMenu : GameState
   {
 
     //-----------------------------------------------------------------------------------
-    public override EGameState GetStateType()
+    public override EGameStateType GetStateType()
     {
-      return EGameState.MAIN_MENU;
+      return EGameStateType.MAIN_MENU;
     }
 
     //-----------------------------------------------------------------------------------
@@ -31,13 +38,13 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     public void OnPlay()
     {
-      Game.Instance.Ui.SwitchToState(EGameState.GAME_SINGLE);
+      Game.Instance.Ui.SwitchToState(new GameSingleParams());
     }
 
     //-----------------------------------------------------------------------------------
     public void OnScore()
     {
-      Game.Instance.Ui.SwitchToState(EGameState.PLAYER_SCORE);
+      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(1));
     }
 
     //-----------------------------------------------------------------------------------

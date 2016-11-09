@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GUI
+namespace GUI.States
 {
-  public enum EGameState
+  public enum EGameStateType
   {
     MAIN_MENU,
     GAME_SINGLE,
@@ -11,11 +11,18 @@ namespace GUI
     MESSAGE_BOX,
   }
 
-  public abstract class UIGameState : MonoBehaviour
+  //Creation params
+  public abstract class GameStateParams
   {
-    public abstract EGameState  GetStateType();
-    public abstract void        OnStart();
-    public abstract void        OnUpdate();
+    public abstract string          GetSceneName();
+    public abstract EGameStateType  GetStateType();
+  }
+
+  public abstract class GameState : MonoBehaviour
+  {
+    public abstract EGameStateType  GetStateType();
+    public abstract void            OnStart();
+    public abstract void            OnUpdate();
 
 
     // Use this for initialization
@@ -53,7 +60,8 @@ namespace GUI
 
     //Members
     //-----------------------------------------------------------------------------------
-    Canvas m_rootCanvas = null;
+    Canvas          m_rootCanvas = null;
+    GameStateParams m_creationParams = null;
   }
 
 

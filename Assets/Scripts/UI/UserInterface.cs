@@ -16,25 +16,9 @@ namespace GUI
     }
 
     //-----------------------------------------------------------------------------------
-    public void SwitchToState(EGameState eState)
+    public void SwitchToState(States.GameStateParams stateParams)
     {
-      string strSceneName = "";
-      switch (eState)
-      {
-      case EGameState.MAIN_MENU:
-        strSceneName = "MainMenu";
-        break;
-      case EGameState.GAME_SINGLE:
-        strSceneName = "GameSingle";
-        break;
-      case EGameState.PLAYER_SCORE:
-        strSceneName = "PlayerScore";
-        break;
-      case EGameState.MESSAGE_BOX:
-        strSceneName = "PopUp";
-        break;
-      }
-
+      string strSceneName = stateParams.GetSceneName();
       if (strSceneName.Length > 0)
         SceneManager.LoadScene(strSceneName);
       //else

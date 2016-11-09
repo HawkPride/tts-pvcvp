@@ -8,7 +8,9 @@ public class Game
 
   public UserInterface Ui { get { return m_ui; } }
   public Data.GameData GetConfig() { return m_gameData;  }
-  
+
+  public GameResults GameResults { get { return m_results; } set { m_results = value; } }
+
   //-----------------------------------------------------------------------------------
   public static void CreateGame()
   {
@@ -31,7 +33,7 @@ public class Game
     m_ui.Init();
 
 
-    m_ui.SwitchToState(EGameState.MAIN_MENU);
+    m_ui.SwitchToState(new GUI.States.MainMenuParams());
   }
 
   //-----------------------------------------------------------------------------------
@@ -47,8 +49,8 @@ public class Game
   //-----------------------------------------------------------------------------------
   static Game s_game;
 
-
   UserInterface   m_ui;
   Data.GameData   m_gameData;
 
+  GameResults     m_results;
 }

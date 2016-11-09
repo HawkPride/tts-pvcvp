@@ -1,29 +1,51 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GUI
+namespace GUI.States
 {
-  public class PlayersScore : UIGameState
+  //Creation params
+  public class PlayersScoreParams : GameStateParams
+  {
+    public override string GetSceneName() { return "PlayerScore"; }
+    public override EGameStateType GetStateType() { return EGameStateType.PLAYER_SCORE; }
+    public PlayersScoreParams(int nScore) { m_nScore = nScore; }
+
+    int m_nScore = -1;
+  }
+
+
+  public class PlayersScore : GameState
   {
     public DynamicScrollView m_scrollView;
 
     //-----------------------------------------------------------------------------------
-    public override EGameState GetStateType()
+    public override EGameStateType GetStateType()
     {
-      return EGameState.PLAYER_SCORE;
+      return EGameStateType.PLAYER_SCORE;
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      for (int i = 0; i < 10; i++)
+      if (Game.Instance.GameResults == null)
       {
-        StatsProviderBase.Stats rec;
-        rec.m_strPlayerName = "blah";
-        rec.m_nScore = i * 10;
+        //Show the stored score
+        for (int i = 0; i < 10; i++)
+        {
+          StatsProviderBase.Stats rec;
+          rec.m_strPlayerName = "blah";
+          rec.m_nScore = i * 10;
 
-        PlayersScoreItem item = m_scrollView.AddListItem().GetComponent<PlayersScoreItem>();
-        item.Set(rec);
+          PlayersScoreItem item = m_scrollView.AddListItem().GetComponent<PlayersScoreItem>();
+          if (i % 2 == 0)
+            item.Set(rec);
+          else
+            item.SetAsInput(rec);
+        }
+      }
+      else
+      {
+        //Add new results
       }
     }
 
@@ -37,7 +59,8 @@ namespace GUI
     //-----------------------------------------------------------------------------------
     public void OnButtonOk()
     {
-      Game.Instance.Ui.SwitchToState(EGameState.MAIN_MENU);
+
+      Game.Instance.Ui.SwitchToState(new MainMenuParams());
     }
   }
 
