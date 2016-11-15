@@ -22,28 +22,31 @@ public class StatsProviderLocal
   //-----------------------------------------------------------------------------------
   public override bool AddStats(Stats stats)
   {
-    //Stats always sorted, find first with the lower score
-    int nIndex = m_arCurrRecords.FindIndex( (x) => ( x.m_nScore <= stats.m_nScore ) );
-
+    int nIndex = GetNewScoreIndex(stats.m_nScore);
     if (nIndex == -1)
     {
-      if (m_arCurrRecords.Count > 0)
-      {
-        //No lower result was found, insert to the end
-        nIndex = m_arCurrRecords.Count;
-      }
-      else
-      {
-        //If the list is empty, insert anyway
-        nIndex = 0;
-      }
+      //No lower result was found, insert to the end
+      nIndex = m_arCurrRecords.Count;
     }
-    m_arCurrRecords.Insert(nIndex, stats);
+    if (nIndex < MAX_STORED_RECORDS)
+    {
+      m_arCurrRecords.Insert(nIndex, stats);
 
-    int nTotalItems = m_arCurrRecords.Count;
-    if (nTotalItems > MAX_STORED_RECORDS)
-      m_arCurrRecords.RemoveRange(MAX_STORED_RECORDS, nTotalItems - MAX_STORED_RECORDS);
-    return true;
+      int nTotalItems = m_arCurrRecords.Count;
+      if (nTotalItems > MAX_STORED_RECORDS)
+        m_arCurrRecords.RemoveRange(MAX_STORED_RECORDS, nTotalItems - MAX_STORED_RECORDS);
+
+      return true;
+    }
+    else
+      return false;
+  }
+
+  //-----------------------------------------------------------------------------------
+  public override int GetNewScoreIndex(int nScore)
+  {
+    //Stats always sorted, find first with the lower score
+    return m_arCurrRecords.FindIndex( (x) => ( x.m_nScore <= nScore) );
   }
 
   //-----------------------------------------------------------------------------------
@@ -76,8 +79,7 @@ public class StatsProviderLocal
     fs.Close();
 
     //Keep stats sorted
-    Comparison<Stats> f = (x, y) => (  x.m_nScore < y.m_nScore ? 1 : -1 );
-    m_arCurrRecords.Sort(f);
+    m_arCurrRecords.Sort((x, y) => (x.m_nScore < y.m_nScore ? 1 : -1));
 
     return true;
   }

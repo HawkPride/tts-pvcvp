@@ -9,7 +9,7 @@ public class Game
   public UserInterface Ui { get { return m_ui; } }
   public Data.GameData GetConfig() { return m_gameData;  }
 
-  public GameResults GameResults { get { return m_results; } set { m_results = value; } }
+  public GameResults Results { get { return m_results; } set { m_results = value; } }
 
   //-----------------------------------------------------------------------------------
   public static void CreateGame()

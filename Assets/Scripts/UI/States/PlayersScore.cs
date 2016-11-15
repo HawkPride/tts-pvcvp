@@ -18,6 +18,10 @@ namespace GUI.States
   {
     public DynamicScrollView m_scrollView;
 
+
+    int               m_nInputIndex = -1;
+    StatsProviderBase m_statsProv = null;
+
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -27,20 +31,44 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      if (Game.Instance.GameResults == null)
+      m_statsProv = new StatsProviderLocal();
+      m_statsProv.Load();
+      if (Game.Instance.Results == null)
       {
-        StatsProviderBase sp = new StatsProviderLocal();
-        sp.Load();
-        var res = sp.GetCurStats(0, 7);
+        m_nInputIndex = -1;
+        var res = m_statsProv.GetCurStats(0, 10);
         for (int i = 0; i < res.Count; i++)
         {
-          PlayersScoreItem item = m_scrollView.AddListItem().GetComponent<PlayersScoreItem>();
+          PlayersScoreItem item = m_scrollView.AddListItem<PlayersScoreItem>();
           item.Set(res[i]);
         }
       }
       else
       {
+        GameResults gameRes = Game.Instance.Results;
         //Add new results
+        m_nInputIndex = m_statsProv.GetNewScoreIndex(gameRes.Score);
+        //The results in high score
+        if (m_nInputIndex >= 0)
+        {
+          var res = m_statsProv.GetCurStats(0, 10);
+          for (int i = 0; i < res.Count; i++)
+          {
+            var item = m_scrollView.AddListItem<PlayersScoreItem>();
+            int nElIdx = i < m_nInputIndex ? i : i - 1;
+            if (i == m_nInputIndex)
+            {
+              var newRes = new StatsProviderBase.Stats();
+              newRes.m_nScore = gameRes.Score;
+              newRes.m_strPlayerName = "Enter Name";
+              item.SetAsInput(newRes);
+            }
+            else
+              item.Set(res[nElIdx]);
+          }
+        }
+        else
+          Game.Instance.Ui.SwitchToState(new MainMenuParams());
       }
     }
 
@@ -52,8 +80,24 @@ namespace GUI.States
     }
 
     //-----------------------------------------------------------------------------------
+    public override void OnEnd()
+    {
+    }
+
+    //-----------------------------------------------------------------------------------
     public void OnButtonOk()
     {
+      if (m_nInputIndex != -1)
+      {
+        var item = m_scrollView.GetListItem<PlayersScoreItem>(m_nInputIndex);
+        var newRes = new StatsProviderBase.Stats();
+        newRes.m_strPlayerName = item.GetName();
+        newRes.m_nScore = Game.Instance.Results.Score;
+        if (m_statsProv.AddStats(newRes))
+          m_statsProv.Save();
+      }
+      m_nInputIndex = -1;
+      Game.Instance.Results = null;
 
       Game.Instance.Ui.SwitchToState(new MainMenuParams());
     }

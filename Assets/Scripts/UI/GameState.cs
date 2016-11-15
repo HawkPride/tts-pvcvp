@@ -23,6 +23,7 @@ namespace GUI.States
     public abstract EGameStateType  GetStateType();
     public abstract void            OnStart();
     public abstract void            OnUpdate();
+    public abstract void            OnEnd();
 
 
     // Use this for initialization
@@ -46,6 +47,12 @@ namespace GUI.States
       OnUpdate();
     }
 
+    //-----------------------------------------------------------------------------------
+    void OnDestroy()
+    {
+      OnEnd();
+    }
+  
     //-----------------------------------------------------------------------------------
     public void DeleteGameState()
     {

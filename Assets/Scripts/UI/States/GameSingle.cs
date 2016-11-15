@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace GUI.States
 {
@@ -17,6 +18,8 @@ namespace GUI.States
   public class GameSingle : GameState
   {
 
+    public Glass m_glass;
+
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -26,7 +29,7 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-
+      m_glass.m_listenerGameEnd += OnGameEnd;
     }
 
     //-----------------------------------------------------------------------------------
@@ -37,12 +40,18 @@ namespace GUI.States
     }
 
     //-----------------------------------------------------------------------------------
+    public override void OnEnd()
+    {
+      m_glass.m_listenerGameEnd -= OnGameEnd;
+    }
+
+    //-----------------------------------------------------------------------------------
     public void OnGameEnd()
     {
       GameResults res = new GameResults();
-      res.Score = 100;
-      Game.Instance.GameResults = res;
-      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(10));
+      res.Score = m_glass.Score;
+      Game.Instance.Results = res;
+      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(m_glass.Score));
     }
   }
 }

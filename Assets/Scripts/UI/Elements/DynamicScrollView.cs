@@ -13,6 +13,7 @@ namespace GUI
     ScrollRect m_scrollRect;
 
 
+    //-----------------------------------------------------------------------------------
     // Use this for initialization
     void Awake()
     {
@@ -21,12 +22,14 @@ namespace GUI
         m_scrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
     }
 
+    //-----------------------------------------------------------------------------------
     // Update is called once per frame
     void Update()
     {
 
     }
 
+    //-----------------------------------------------------------------------------------
     public virtual GameObject AddListItem()
     {
       if (!m_scrollRect)
@@ -46,6 +49,30 @@ namespace GUI
       float fScrollDelta = fCurrHeight / content.childCount * 0.33f;
       m_scrollRect.scrollSensitivity = fScrollDelta;
       return newObj;
+    }
+
+    //-----------------------------------------------------------------------------------
+    public virtual GameObject GetListItem(int nIndex)
+    {
+      RectTransform content = m_scrollRect.content;
+      if (nIndex < 0 || nIndex > content.childCount - 1)
+        return null;
+
+      return content.GetChild(nIndex).gameObject;
+    }
+
+
+    //-----------------------------------------------------------------------------------
+    public T AddListItem<T>() where T : Component
+    {
+      return AddListItem().GetComponent<T>();
+    }
+
+
+    //-----------------------------------------------------------------------------------
+    public T GetListItem<T>(int nIndex) where T : Component
+    {
+      return GetListItem(nIndex).GetComponent<T>();
     }
 
   }

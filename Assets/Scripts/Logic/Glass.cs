@@ -24,7 +24,7 @@ public class Glass : MonoBehaviour
   public int    m_nDifficultyLinesInc = 5; 
 
   public Block[,] Field   { get { return m_arField;  } }
-  public int      Points  { get { return m_nCurrPoints; } }
+  public int      Score  { get { return m_nCurrPoints; } }
   public Figure   NextFigure { get { return m_nextFigure; } }
 
   public float    FrameTime

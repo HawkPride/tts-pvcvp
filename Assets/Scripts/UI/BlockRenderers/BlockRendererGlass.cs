@@ -51,7 +51,7 @@ namespace GUI
       }
 
       if (m_pointsText)
-        m_pointsText.text = m_glass.Points.ToString();
+        m_pointsText.text = m_glass.Score.ToString();
     }
   }
 }

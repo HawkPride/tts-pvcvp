@@ -10,8 +10,13 @@ public abstract class StatsProviderBase
     public int     m_nScore;
   };
 
-  public abstract List<Stats> GetCurStats (int nStartIndex, int nCount);
-  public abstract bool        AddStats    (Stats stats);
-  public abstract bool        Load        ();
-  public abstract bool        Save        ();
+  public abstract List<Stats> GetCurStats     (int nStartIndex, int nCount);
+
+  public abstract bool        AddStats        (Stats stats);
+
+  public abstract int         GetNewScoreIndex(int nScore);
+
+  public abstract bool        Load            ();
+
+  public abstract bool        Save            ();
 }
