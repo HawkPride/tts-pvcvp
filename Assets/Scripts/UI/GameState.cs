@@ -8,7 +8,6 @@ namespace GUI.States
     MAIN_MENU,
     GAME_SINGLE,
     PLAYER_SCORE,
-    MESSAGE_BOX,
   }
 
   //Creation params

@@ -20,14 +20,19 @@ class TimeInterval
 
   public bool StartNewInterval()
   {
-    float fPassed = Passed();
-    if (fPassed > m_fInterval)
+    if (IsIntervalPassed())
     {
-      float fTimeLeft = fPassed - m_fInterval;
+      float fTimeLeft = Passed() - m_fInterval;
       m_fStartTime = Time.time + fTimeLeft;
       return true;
     }
     return false;
+  }
+
+  public bool IsIntervalPassed()
+  {
+    float fPassed = Passed();
+    return fPassed > m_fInterval;
   }
 
   public float Interval { set { m_fInterval = value; } get { return m_fInterval; } }

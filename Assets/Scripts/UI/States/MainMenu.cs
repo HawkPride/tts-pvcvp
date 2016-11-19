@@ -62,13 +62,14 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public void OnQuit()
     {
-      Application.Quit();
+      MessageBox.Create(GetCanvas(), "Are you sure?", MessageBox.EType.OK_CANCEL, () => { Application.Quit(); });
     }
 
     //-----------------------------------------------------------------------------------
     public void OnTest()
     {
-      StatsProviderBase sp = new StatsProviderLocal();
+      GameMessage.Create(GetCanvas(), "YOU WON!", null, 5.0f);
+      /*StatsProviderBase sp = new StatsProviderLocal();
       for (int i = 0; i < 15; i++)
       {
         StatsProviderBase.Stats stats = new StatsProviderBase.Stats();
@@ -76,7 +77,8 @@ namespace GUI.States
         stats.m_nScore = Random.Range(10, 100);
         sp.AddStats(stats);
       }
-      sp.Save();
+      sp.Save();*/
+
     }
 
   }

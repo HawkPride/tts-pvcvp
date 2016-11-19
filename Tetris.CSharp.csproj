@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -69,8 +67,8 @@
     <Compile Include="Assets\Scripts\Logic\Block.cs" />
     <Compile Include="Assets\Scripts\Logic\Figure.cs" />
     <Compile Include="Assets\Scripts\Logic\Glass.cs" />
-    <Compile Include="Assets\Scripts\Main\GameResults.cs" />
     <Compile Include="Assets\Scripts\Main\Game.cs" />
+    <Compile Include="Assets\Scripts\Main\GameResults.cs" />
     <Compile Include="Assets\Scripts\Main\InputProvider.cs" />
     <Compile Include="Assets\Scripts\Main\Main.cs" />
     <Compile Include="Assets\Scripts\Main\StatsProviders\StatsProviderBase.cs" />
@@ -80,13 +78,14 @@
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererGlass.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererPreview.cs" />
     <Compile Include="Assets\Scripts\UI\Elements\DynamicScrollView.cs" />
+    <Compile Include="Assets\Scripts\UI\Elements\GameMessage.cs" />
+    <Compile Include="Assets\Scripts\UI\Elements\MessageBox.cs" />
     <Compile Include="Assets\Scripts\UI\Elements\PlayersScoreItem.cs" />
+    <Compile Include="Assets\Scripts\UI\GameState.cs" />
     <Compile Include="Assets\Scripts\UI\HoldableButton.cs" />
     <Compile Include="Assets\Scripts\UI\States\GameSingle.cs" />
     <Compile Include="Assets\Scripts\UI\States\MainMenu.cs" />
-    <Compile Include="Assets\Scripts\UI\States\MessageBox.cs" />
     <Compile Include="Assets\Scripts\UI\States\PlayersScore.cs" />
-    <Compile Include="Assets\Scripts\UI\GameState.cs" />
     <Compile Include="Assets\Scripts\UI\UIPlatformSwitcher.cs" />
     <Compile Include="Assets\Scripts\UI\UserInterface.cs" />
     <Compile Include="Assets\Scripts\Utils\TimeInterval.cs" />

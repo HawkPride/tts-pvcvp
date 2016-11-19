@@ -4,17 +4,10 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace GUI.States
+namespace GUI
 {
-  //Creation params
-  public class MessageBoxParams : GameStateParams
-  {
-    public override string GetSceneName() { return "PopUp"; }
-    public override EGameStateType GetStateType() { return EGameStateType.MESSAGE_BOX; }
-  }
 
-
-  public class MessageBox : GameState
+  public class MessageBox : MonoBehaviour
   {
     public enum EType
     {
@@ -36,10 +29,10 @@ namespace GUI.States
     public static void Create(Canvas pParent, string strMessage, EType eType, UnityAction delYes = null, UnityAction delNo = null)
     {
       var config = Game.Instance.GetConfig();
-      if (!config.dlgMessageBox)
+      if (!config.messageBox)
         return;
 
-      GameObject obj = GameObject.Instantiate<GameObject>(config.dlgMessageBox);
+      GameObject obj = GameObject.Instantiate<GameObject>(config.messageBox);
       obj.transform.SetParent(pParent.transform, false);
       MessageBox msgBox = obj.GetComponentInChildren<MessageBox>();
       if (!msgBox)
@@ -71,27 +64,15 @@ namespace GUI.States
 
 
     //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.MESSAGE_BOX;
-    }
-
-    //-----------------------------------------------------------------------------------
-    public override void OnStart()
+    void Start()
     {
 
     }
 
     //-----------------------------------------------------------------------------------
-    public override void OnUpdate()
+    void Update()
     {
 
-
-    }
-
-    //-----------------------------------------------------------------------------------
-    public override void OnEnd()
-    {
 
     }
 
@@ -99,7 +80,7 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public void OnButton()
     {
-      DeleteGameState();
+      Destroy(gameObject);
     }
   }
 }

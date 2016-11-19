@@ -11,6 +11,8 @@ public class Game
 
   public GameResults Results { get { return m_results; } set { m_results = value; } }
 
+  public StatsProviderBase Stats { get { return m_stats; } }
+
   //-----------------------------------------------------------------------------------
   public static void CreateGame()
   {
@@ -28,6 +30,9 @@ public class Game
   public void Init(Data.GameData gameData)
   {
     m_gameData = gameData;
+
+    m_stats = new StatsProviderLocal();
+    m_stats.Load();
 
     m_ui = new UserInterface();
     m_ui.Init();
@@ -49,8 +54,9 @@ public class Game
   //-----------------------------------------------------------------------------------
   static Game s_game;
 
-  UserInterface   m_ui;
-  Data.GameData   m_gameData;
+  UserInterface     m_ui;
+  Data.GameData     m_gameData;
+  StatsProviderBase m_stats;
 
-  GameResults     m_results;
+  GameResults       m_results;
 }

@@ -46,7 +46,11 @@ public class StatsProviderLocal
   public override int GetNewScoreIndex(int nScore)
   {
     //Stats always sorted, find first with the lower score
-    return m_arCurrRecords.FindIndex( (x) => ( x.m_nScore <= nScore) );
+    int nIdx = m_arCurrRecords.FindIndex( (x) => ( x.m_nScore <= nScore) );
+    //The list is empty, new index would be 0
+    if (nIdx < 0 && m_arCurrRecords.Count == 0)
+      return 0;
+    return nIdx;
   }
 
   //-----------------------------------------------------------------------------------
