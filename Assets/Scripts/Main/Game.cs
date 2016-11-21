@@ -13,6 +13,8 @@ public class Game
 
   public StatsProviderBase Stats { get { return m_stats; } }
 
+  public Ads.AdsManager AdsMan { get { return m_adsMan; } }
+
   //-----------------------------------------------------------------------------------
   public static void CreateGame()
   {
@@ -34,6 +36,9 @@ public class Game
     m_stats = new StatsProviderLocal();
     m_stats.Load();
 
+    m_adsMan = new Ads.AdsManager();
+    m_adsMan.Init();
+
     m_ui = new UserInterface();
     m_ui.Init();
 
@@ -44,7 +49,7 @@ public class Game
   //-----------------------------------------------------------------------------------
   public void Update()
   {
-
+    m_adsMan.Update();
   }
 
 
@@ -57,6 +62,7 @@ public class Game
   UserInterface     m_ui;
   Data.GameData     m_gameData;
   StatsProviderBase m_stats;
+  Ads.AdsManager    m_adsMan;
 
   GameResults       m_results;
 }

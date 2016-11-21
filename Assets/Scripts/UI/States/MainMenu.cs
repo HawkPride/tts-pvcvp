@@ -14,7 +14,6 @@ namespace GUI.States
 
   public class MainMenu : GameState
   {
-
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -24,20 +23,21 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      
+      Game game = Game.Instance;
+      if (game.AdsMan.ShouldShowAd())
+        game.AdsMan.Show();
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnUpdate()
     {
-      
 
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
-
+      Game.Instance.AdsMan.CancelShow();
     }
 
 

@@ -60,6 +60,7 @@ public class StatsProviderLocal
     FileStream fs = File.Open(strFile, FileMode.OpenOrCreate);
     BinaryFormatter bf = new BinaryFormatter();
     bf.Serialize(fs, m_arCurrRecords);
+    bf.Serialize(fs, m_nGamesPlayed);
     fs.Close();
     return true;
   }
@@ -75,10 +76,12 @@ public class StatsProviderLocal
     try
     {
       m_arCurrRecords = (List<Stats>)bf.Deserialize(fs);
+      m_nGamesPlayed = (int)bf.Deserialize(fs);
     }
     catch (SerializationException)
     {
       m_arCurrRecords = new List<Stats>();
+      m_nGamesPlayed = 0;
     }
     fs.Close();
 

@@ -48,12 +48,13 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public void OnGameEnd()
     {
-     StatsProviderBase sp = Game.Instance.Stats;
+      StatsProviderBase sp = Game.Instance.Stats;
+      sp.m_nGamesPlayed++;
       //New score is not in hi score
       if (sp.GetNewScoreIndex(m_glass.Score) < 0 || m_glass.Score == 0)
-        GameMessage.Create(GetCanvas(), "Game Over", OnGameOver, 3.0f);
+        GameMessage.Create(GetCanvas(), "Game Over", OnGameOver, 1.5f);
       else
-        GameMessage.Create(GetCanvas(), "New High Score", OnHighScore, 3.0f);
+        GameMessage.Create(GetCanvas(), "New High Score", OnHighScore, 1.5f);
 
     }
 
@@ -69,6 +70,7 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public void OnGameOver()
     {
+      Game.Instance.Stats.Save();
       Game.Instance.Ui.SwitchToState(new MainMenuParams());
     }
   }
