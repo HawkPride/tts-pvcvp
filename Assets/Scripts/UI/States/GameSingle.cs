@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
 
-namespace GUI.States
+namespace GameGUI.States
 {
   //Creation params
   public class GameSingleParams : GameStateParams

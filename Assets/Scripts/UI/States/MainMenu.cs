@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GUI.States
+namespace GameGUI.States
 {
   //Creation params
   public class MainMenuParams : GameStateParams
@@ -68,16 +68,7 @@ namespace GUI.States
     //-----------------------------------------------------------------------------------
     public void OnTest()
     {
-      GameMessage.Create(GetCanvas(), "YOU WON!", null, 5.0f);
-      /*StatsProviderBase sp = new StatsProviderLocal();
-      for (int i = 0; i < 15; i++)
-      {
-        StatsProviderBase.Stats stats = new StatsProviderBase.Stats();
-        stats.m_strPlayerName = "Hawk" + i.ToString();
-        stats.m_nScore = Random.Range(10, 100);
-        sp.AddStats(stats);
-      }
-      sp.Save();*/
+      Game.Instance.NetMan.Connect();
 
     }
 

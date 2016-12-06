@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GUI.States
+namespace GameGUI.States
 {
   //Creation params
   public class PlayersScoreParams : GameStateParams

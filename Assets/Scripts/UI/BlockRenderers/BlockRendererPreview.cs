@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Math;
 
-namespace GUI
+namespace GameGUI
 {
   public class BlockRendererPreview : BlockRendererBase
   {

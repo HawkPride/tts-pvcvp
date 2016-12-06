@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GUI
+namespace GameGUI
 {
   public class UIPlatformSwitcher : MonoBehaviour
   {

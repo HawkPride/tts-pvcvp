@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace GUI
+namespace GameGUI
 {
 
   public class MessageBox : MonoBehaviour

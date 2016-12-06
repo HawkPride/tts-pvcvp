@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using GUI;
+using GameGUI;
 
 public class Game
 {
@@ -14,6 +14,8 @@ public class Game
   public StatsProviderBase Stats { get { return m_stats; } }
 
   public Ads.AdsManager AdsMan { get { return m_adsMan; } }
+
+  public Net.NetManager NetMan { get { return m_netMan; } }
 
   //-----------------------------------------------------------------------------------
   public static void CreateGame()
@@ -39,17 +41,21 @@ public class Game
     m_adsMan = new Ads.AdsManager();
     m_adsMan.Init();
 
+    m_netMan = new Net.NetManager();
+    m_netMan.Init();
+
     m_ui = new UserInterface();
     m_ui.Init();
 
 
-    m_ui.SwitchToState(new GUI.States.MainMenuParams());
+    m_ui.SwitchToState(new GameGUI.States.MainMenuParams());
   }
 
   //-----------------------------------------------------------------------------------
   public void Update()
   {
     m_adsMan.Update();
+    m_netMan.Update();
   }
 
 
@@ -63,6 +69,7 @@ public class Game
   Data.GameData     m_gameData;
   StatsProviderBase m_stats;
   Ads.AdsManager    m_adsMan;
+  Net.NetManager    m_netMan;
 
   GameResults       m_results;
 }

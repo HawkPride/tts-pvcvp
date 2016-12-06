@@ -67,8 +67,45 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\CustomTypes.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Enums.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Extensions.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\FriendInfo.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\GizmoType.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\LoadbalancingPeer.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\NetworkingPeer.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonClasses.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonHandler.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonLagSimulationGui.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonNetwork.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonPlayer.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonStatsGui.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonStreamQueue.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PhotonView.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\PingCloudRegions.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\RPC.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Room.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\RoomInfo.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\RpcIndexComponent.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\ServerSettings.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\SocketUdp.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\SocketWebTcp.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonAnimatorView.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonRigidbody2DView.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonRigidbodyView.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformView.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformViewPositionControl.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformViewPositionModel.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformViewRotationControl.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformViewRotationModel.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformViewScaleControl.cs" />
+    <Compile Include="Assets\Photon Unity Networking\PhotonNetwork\Views\PhotonTransformViewScaleModel.cs" />
+    <Compile Include="Assets\Photon Unity Networking\Utils\ShowStatusWhenConnecting.cs" />
     <Compile Include="Assets\Scripts\Ads\AdsManager.cs" />
     <Compile Include="Assets\Scripts\Ads\UnityAds.cs" />
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
@@ -82,6 +119,7 @@
     <Compile Include="Assets\Scripts\Main\StatsProviders\StatsProviderBase.cs" />
     <Compile Include="Assets\Scripts\Main\StatsProviders\StatsProviderLocal.cs" />
     <Compile Include="Assets\Scripts\Math\VecInt2.cs" />
+    <Compile Include="Assets\Scripts\Net\NetManager.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererBase.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererGlass.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererPreview.cs" />
@@ -91,12 +129,16 @@
     <Compile Include="Assets\Scripts\UI\Elements\PlayersScoreItem.cs" />
     <Compile Include="Assets\Scripts\UI\GameState.cs" />
     <Compile Include="Assets\Scripts\UI\HoldableButton.cs" />
+    <Compile Include="Assets\Scripts\UI\States\GamePvp1x1.cs" />
     <Compile Include="Assets\Scripts\UI\States\GameSingle.cs" />
     <Compile Include="Assets\Scripts\UI\States\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\States\PlayersScore.cs" />
     <Compile Include="Assets\Scripts\UI\UIPlatformSwitcher.cs" />
     <Compile Include="Assets\Scripts\UI\UserInterface.cs" />
     <Compile Include="Assets\Scripts\Utils\TimeInterval.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Plugins\Photon3Unity3D.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

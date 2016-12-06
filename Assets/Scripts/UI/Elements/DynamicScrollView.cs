@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-namespace GUI
+namespace GameGUI
 {
   public class DynamicScrollView : MonoBehaviour
   {

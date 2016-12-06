@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GUI.States
+namespace GameGUI.States
 {
   public enum EGameStateType
   {
     MAIN_MENU,
     GAME_SINGLE,
+    GAME_PVP_1x1,
     PLAYER_SCORE,
   }
 
