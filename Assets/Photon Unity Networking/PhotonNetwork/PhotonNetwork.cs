@@ -27,6 +27,11 @@ using System.IO;
 /// \ingroup publicApi
 public static class PhotonNetwork
 {
+  
+  //TRU:Added
+  public static IPunCallbacks messageListener = null;
+  //TRU: End of added
+
     /// <summary>Version number of PUN. Also used in GameVersion to separate client version from each other.</summary>
     public const string versionPUN = "1.79";
 

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
-
+using ExitGames.Client.Photon;
+using System;
+using System.Collections.Generic;
 
 namespace Net
 {
@@ -15,14 +17,21 @@ namespace Net
 
   public delegate void NetActionResult(bool bRes);
 
-  public class NetManager
+  public class NetManager : IPunCallbacks
   {
 
     //-----------------------------------------------------------------------------------
     // Use this for initialization
     public void Init()
     {
+      PhotonNetwork.messageListener = this;
+    }
 
+    //-----------------------------------------------------------------------------------
+    // Use this for finalization
+    public void End()
+    {
+      PhotonNetwork.messageListener = null;
     }
 
     //-----------------------------------------------------------------------------------
@@ -38,7 +47,7 @@ namespace Net
       //Already connected
       if (PhotonNetwork.connected)
         return true;
-      return PhotonNetwork.ConnectToBestCloudServer(Game.Instance.GetConfig().gameVersion);
+      return PhotonNetwork.ConnectUsingSettings(Game.Instance.GetConfig().gameVersion);
     }
 
     //-----------------------------------------------------------------------------------
@@ -57,11 +66,122 @@ namespace Net
       return PhotonNetwork.JoinLobby(lobby);
     }
 
+    //-----------------------------------------------------------------------------------
+    //Photon callbacks
+    public void OnConnectedToPhoton()
+    {
+      
+    }
 
+    public void OnLeftRoom()
+    {
+    }
 
+    public void OnMasterClientSwitched(PhotonPlayer newMasterClient)
+    {
+    }
 
+    public void OnPhotonCreateRoomFailed(object[] codeAndMsg)
+    {
+    }
 
+    public void OnPhotonJoinRoomFailed(object[] codeAndMsg)
+    {
+    }
 
+    public void OnCreatedRoom()
+    {
+    }
+
+    public void OnJoinedLobby()
+    {
+      Hashtable roomProps = new Hashtable();
+
+      PhotonNetwork.JoinRandomRoom(roomProps, 2);
+    }
+
+    public void OnLeftLobby()
+    {
+    }
+
+    public void OnFailedToConnectToPhoton(DisconnectCause cause)
+    {
+    }
+
+    public void OnConnectionFail(DisconnectCause cause)
+    {
+    }
+
+    public void OnDisconnectedFromPhoton()
+    {
+    }
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+    }
+
+    public void OnReceivedRoomListUpdate()
+    {
+    }
+
+    public void OnJoinedRoom()
+    {
+    }
+
+    public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
+    }
+
+    public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+    {
+    }
+
+    public void OnPhotonRandomJoinFailed(object[] codeAndMsg)
+    {
+    }
+
+    public void OnConnectedToMaster()
+    {
+      EnterMatch(EGameType.PvP1x1, null);
+    }
+
+    public void OnPhotonMaxCccuReached()
+    {
+    }
+
+    public void OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged)
+    {
+    }
+
+    public void OnPhotonPlayerPropertiesChanged(object[] playerAndUpdatedProps)
+    {
+    }
+
+    public void OnUpdatedFriendList()
+    {
+    }
+
+    public void OnCustomAuthenticationFailed(string debugMessage)
+    {
+    }
+
+    public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
+    {
+    }
+
+    public void OnWebRpcResponse(OperationResponse response)
+    {
+    }
+
+    public void OnOwnershipRequest(object[] viewAndPlayer)
+    {
+    }
+
+    public void OnLobbyStatisticsUpdate()
+    {
+    }
+
+    //End of Photon callbacks
 
     EGameType       m_eCurGameType = EGameType.UNDEFINED;
     NetActionResult m_cbEnterMatch = null;
