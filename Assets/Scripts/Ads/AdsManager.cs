@@ -22,12 +22,19 @@ namespace Ads
       //Consume the ad was shown at the previous launch
       m_nLastShowGamesCount = Game.Instance.Stats.m_nGamesPlayed;
 
-      m_adsProvider.Init(CompleteCallback);
+#if UNITY_ANDROID
+      m_adsProvider = new UnityAds();
+#endif
+
+      if (m_adsProvider != null)
+        m_adsProvider.Init(CompleteCallback);
     }
 
     //-----------------------------------------------------------------------------------
     public void Update()
     {
+      if (m_adsProvider == null)
+        return;
       if (m_bShowOrdered && !m_bShown)
       {
         m_bShown = m_adsProvider.ShowRewardedAd();
@@ -68,7 +75,7 @@ namespace Ads
     }
 
 
-    UnityAds  m_adsProvider = new UnityAds();
+    IAdsProvoder m_adsProvider = null;
 
     bool  m_bShowOrdered = false;
     bool  m_bShown = false;

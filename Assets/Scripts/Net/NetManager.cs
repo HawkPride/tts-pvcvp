@@ -67,6 +67,16 @@ namespace Net
     }
 
     //-----------------------------------------------------------------------------------
+    void OnSuccesfullyEnteredRoom()
+    {
+      if (m_cbEnterMatch != null)
+      {
+        m_cbEnterMatch.Invoke(true);
+      }
+      m_cbEnterMatch = null;
+    }
+
+    //-----------------------------------------------------------------------------------
     //Photon callbacks
     public void OnConnectedToPhoton()
     {
@@ -87,10 +97,13 @@ namespace Net
 
     public void OnPhotonJoinRoomFailed(object[] codeAndMsg)
     {
+      
+
     }
 
     public void OnCreatedRoom()
     {
+      OnSuccesfullyEnteredRoom();
     }
 
     public void OnJoinedLobby()
@@ -126,6 +139,7 @@ namespace Net
 
     public void OnJoinedRoom()
     {
+      OnSuccesfullyEnteredRoom();
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
@@ -138,6 +152,24 @@ namespace Net
 
     public void OnPhotonRandomJoinFailed(object[] codeAndMsg)
     {
+      //Int16 nReturnCode = (Int16)codeAndMsg[0];
+      //string strMessage = (string)codeAndMsg[1];
+      if (PhotonNetwork.insideLobby == true)
+      {
+        //Create room
+        RoomOptions opts = new RoomOptions();
+        opts.MaxPlayers = 2;
+        opts.PlayerTtl = 1000;
+        opts.EmptyRoomTtl = 0;
+
+        PhotonNetwork.CreateRoom(null, opts, null);
+      }
+      else if (m_cbEnterMatch != null)
+      {
+        m_cbEnterMatch.Invoke(false);
+      }
+      m_cbEnterMatch = null;
+      m_eCurGameType = EGameType.UNDEFINED;
     }
 
     public void OnConnectedToMaster()

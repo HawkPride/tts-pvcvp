@@ -3,7 +3,8 @@ using UnityEngine.Advertisements;
 
 namespace Ads
 {
-  public class UnityAds
+#if UNITY_ANDROID
+  public class UnityAds : IAdsProvoder
   {
     ShowCallback m_callback;
 
@@ -59,5 +60,5 @@ namespace Ads
       m_callback(res);
     }
   }
-
+#endif
 }

@@ -2590,23 +2590,28 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
   public static void SendMonoMessage(PhotonNetworkingMessage methodString, params object[] parameters)
   {
-    HashSet<GameObject> objectsToCall;
+    HashSet<GameObject> objectsToCall = null;
     if (PhotonNetwork.SendMonoMessageTargets != null)
     {
       objectsToCall = PhotonNetwork.SendMonoMessageTargets;
     }
+    /*TRU: Removed, no subscribed broadcast
     else
     {
       objectsToCall = PhotonNetwork.FindGameObjectsWithComponent(PhotonNetwork.SendMonoMessageTargetType);
     }
+    */
 
     string methodName = methodString.ToString();
-    object callParameter = (parameters != null && parameters.Length == 1) ? parameters[0] : parameters;
-    foreach (GameObject gameObject in objectsToCall)
+    if (objectsToCall != null)
     {
-      if (gameObject != null)
+      object callParameter = (parameters != null && parameters.Length == 1) ? parameters[0] : parameters;
+      foreach (GameObject gameObject in objectsToCall)
       {
-        gameObject.SendMessage(methodName, callParameter, SendMessageOptions.DontRequireReceiver);
+        if (gameObject != null)
+        {
+          gameObject.SendMessage(methodName, callParameter, SendMessageOptions.DontRequireReceiver);
+        }
       }
     }
 
@@ -2614,8 +2619,8 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
     if (PhotonNetwork.messageListener != null)
     {
       Type listenerType = PhotonNetwork.messageListener.GetType();
-      MethodInfo theMethod = listenerType.GetMethod(methodName);
-      if (theMethod != null)
+      MethodInfo method = listenerType.GetMethod(methodName);
+      if (method != null)
       {
         object[] callParams = null;
         if (parameters != null)
@@ -2628,7 +2633,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
             callParams[0] = parameters;
           }
         }
-        theMethod.Invoke(PhotonNetwork.messageListener, callParams);
+        method.Invoke(PhotonNetwork.messageListener, callParams);
       }
     }
     //TRU: End of added
