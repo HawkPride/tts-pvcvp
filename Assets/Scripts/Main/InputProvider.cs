@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.EventSystems;
 
 public class InputProvider : MonoBehaviour
 {
@@ -25,11 +25,23 @@ public class InputProvider : MonoBehaviour
 
   public float        m_fInputRepeat    = 0.1f;
 
+  //Buttons
+  public EventTrigger   m_btnUp     = null;
+  public EventTrigger   m_btnDown   = null;
+  public EventTrigger   m_btnLeft   = null;
+  public EventTrigger   m_btnRight  = null;
+
   // Use this for initialization
   //-----------------------------------------------------------------------------------
   public void Start()
   {
     m_timer = new TimeInterval(m_fInputRepeat);
+
+    //Add callbacks to button
+    RegisterButton(m_btnUp, EInputAction.ROTATE);
+    RegisterButton(m_btnDown, EInputAction.DOWN);
+    RegisterButton(m_btnLeft, EInputAction.LEFT);
+    RegisterButton(m_btnRight, EInputAction.RIGHT);
   }
 
   // Update is called once per frame
@@ -99,4 +111,19 @@ public class InputProvider : MonoBehaviour
     m_nCurrButtonFlags &= ~nFlag;
   }
 
+
+  //-----------------------------------------------------------------------------------
+  void RegisterButton(EventTrigger btn, EInputAction eFlag)
+  {
+    if (btn == null)
+      return;
+    EventTrigger.Entry down = new EventTrigger.Entry();
+    down.eventID = EventTriggerType.PointerDown;
+    down.callback.AddListener((eventData) => { OnInputUiButtonDown((int)eFlag); });
+    btn.triggers.Add(down);
+    EventTrigger.Entry up = new EventTrigger.Entry();
+    up.eventID = EventTriggerType.PointerUp;
+    up.callback.AddListener((eventData) => { OnInputUiButtonUp((int)eFlag); });
+    btn.triggers.Add(up);
+  }
 }

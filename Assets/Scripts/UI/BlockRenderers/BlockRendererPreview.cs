@@ -8,8 +8,6 @@ namespace GameGUI
 {
   public class BlockRendererPreview : BlockRendererBase
   {
-    public Glass      m_glass;
-
 
     //-----------------------------------------------------------------------------------
     // Update is called once per frame
@@ -17,7 +15,7 @@ namespace GameGUI
     protected override void UpdateImpl()
     {
       //TODO: Move to Callback form glass
-      if (!m_glass || !m_block)
+      if (m_glass == null || m_block == null)
         return;
 
       RectTransform tf = GetComponent<RectTransform>();

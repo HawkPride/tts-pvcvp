@@ -24,7 +24,7 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
-      return EGameStateType.GAME_SINGLE;
+      return EGameStateType.GAME_PVP_1x1;
     }
 
     //-----------------------------------------------------------------------------------
@@ -49,30 +49,30 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public void OnGameEnd()
     {
-      StatsProviderBase sp = Game.Instance.Stats;
+      /*StatsProviderBase sp = Game.Instance.Stats;
       sp.m_nGamesPlayed++;
       //New score is not in hi score
       if (sp.GetNewScoreIndex(m_ownerGlass.Score) < 0 || m_ownerGlass.Score == 0)
         GameMessage.Create(GetCanvas(), "Game Over", OnGameOver, 1.5f);
       else
-        GameMessage.Create(GetCanvas(), "New High Score", OnHighScore, 1.5f);
+        GameMessage.Create(GetCanvas(), "New High Score", OnHighScore, 1.5f);*/
 
     }
 
     //-----------------------------------------------------------------------------------
     public void OnHighScore()
     {
-      GameResults res = new GameResults();
+      /*GameResults res = new GameResults();
       res.Score = m_ownerGlass.Score;
       Game.Instance.Results = res;
-      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(m_ownerGlass.Score));
+      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(m_ownerGlass.Score));*/
     }
 
     //-----------------------------------------------------------------------------------
     public void OnGameOver()
     {
-      Game.Instance.Stats.Save();
-      Game.Instance.Ui.SwitchToState(new MainMenuParams());
+      /*Game.Instance.Stats.Save();
+      Game.Instance.Ui.SwitchToState(new MainMenuParams());*/
     }
   }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using Math;
 using UnityEngine.Assertions;
 
-public class Glass : MonoBehaviour
+public class Glass
 {
   //Private
   Block[,]      m_arField;
@@ -20,7 +20,7 @@ public class Glass : MonoBehaviour
   public int    m_nSizeX              = 11;
   public int    m_nSizeY              = 25;
   public float  m_fStartStep          = 0.8f;
-  public float  m_fDifficultyMult     =  0.8f;
+  public float  m_fDifficultyMult     = 0.8f;
   public int    m_nDifficultyLinesInc = 5; 
 
   public Block[,] Field   { get { return m_arField;  } }
@@ -44,12 +44,8 @@ public class Glass : MonoBehaviour
   //-----------------------------------------------------------------------------------
   // Use this for initialization
   //-----------------------------------------------------------------------------------
-  public void Start()
+  public void Init()
   {
-    InputProvider ip = GetComponent<InputProvider>();
-    if (ip != null)
-      ip.m_eventListeners += OnInputEvent;
-
     m_nCurrPoints = 0;
     m_arField     = new Block[m_nSizeX, m_nSizeY];
     m_stepTimer   = new TimeInterval(m_fStartStep);
@@ -81,18 +77,11 @@ public class Glass : MonoBehaviour
     ProcessOneStep();
   }
 
-  //-----------------------------------------------------------------------------------
-  public void OnDestroy()
-  {
-    InputProvider ip = GetComponent<InputProvider>();
-    if (ip != null)
-      ip.m_eventListeners -= OnInputEvent;
-  }
 
   //-----------------------------------------------------------------------------------
   //Input
   //-----------------------------------------------------------------------------------
-  void OnInputEvent( int nKey, bool bDown )
+  public void OnInputEvent( int nKey, bool bDown )
   {
     ProcessInput(nKey, bDown);
   }

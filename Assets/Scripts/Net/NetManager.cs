@@ -50,6 +50,11 @@ namespace Net
       return PhotonNetwork.ConnectUsingSettings(Game.Instance.GetConfig().gameVersion);
     }
 
+    public bool IsConnected()
+    {
+      return PhotonNetwork.connected;
+    }
+
     //-----------------------------------------------------------------------------------
     public bool EnterMatch(EGameType eType, NetActionResult resultCallback)
     {
@@ -67,13 +72,27 @@ namespace Net
     }
 
     //-----------------------------------------------------------------------------------
-    void OnSuccesfullyEnteredRoom()
+    void SuccesfullyEnteredRoom()
     {
       if (m_cbEnterMatch != null)
       {
         m_cbEnterMatch.Invoke(true);
       }
       m_cbEnterMatch = null;
+    }
+
+    //-----------------------------------------------------------------------------------
+    void FailedEnterRoom()
+    {
+      m_eCurGameType = EGameType.UNDEFINED;
+      if (PhotonNetwork.insideLobby)
+        PhotonNetwork.LeaveLobby();
+      else
+      {
+        if (m_cbEnterMatch != null)
+          m_cbEnterMatch.Invoke(false);
+        m_cbEnterMatch = null;
+      }
     }
 
     //-----------------------------------------------------------------------------------
@@ -93,28 +112,28 @@ namespace Net
 
     public void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
+      FailedEnterRoom();
     }
 
     public void OnPhotonJoinRoomFailed(object[] codeAndMsg)
     {
-      
-
+      FailedEnterRoom();
     }
 
     public void OnCreatedRoom()
     {
-      OnSuccesfullyEnteredRoom();
+      SuccesfullyEnteredRoom();
     }
 
     public void OnJoinedLobby()
     {
       Hashtable roomProps = new Hashtable();
-
-      PhotonNetwork.JoinRandomRoom(roomProps, 2);
+      PhotonNetwork.JoinRandomRoom(roomProps, 0);
     }
 
     public void OnLeftLobby()
     {
+      FailedEnterRoom();
     }
 
     public void OnFailedToConnectToPhoton(DisconnectCause cause)
@@ -123,6 +142,7 @@ namespace Net
 
     public void OnConnectionFail(DisconnectCause cause)
     {
+      FailedEnterRoom();
     }
 
     public void OnDisconnectedFromPhoton()
@@ -139,7 +159,7 @@ namespace Net
 
     public void OnJoinedRoom()
     {
-      OnSuccesfullyEnteredRoom();
+      SuccesfullyEnteredRoom();
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
@@ -158,18 +178,29 @@ namespace Net
       {
         //Create room
         RoomOptions opts = new RoomOptions();
-        opts.MaxPlayers = 2;
+        switch (m_eCurGameType)
+        {
+        case EGameType.PvP1x1:
+          opts.MaxPlayers = 2;
+          break;
+        case EGameType.PvP2x2:
+          opts.MaxPlayers = 4;
+          break;
+        case EGameType.PvP3x3:
+          opts.MaxPlayers = 6;
+          break;
+        default:
+          Debug.LogError("Unexpected game type " + m_eCurGameType.ToString());
+          break;
+        }
+
         opts.PlayerTtl = 1000;
         opts.EmptyRoomTtl = 0;
 
         PhotonNetwork.CreateRoom(null, opts, null);
       }
-      else if (m_cbEnterMatch != null)
-      {
-        m_cbEnterMatch.Invoke(false);
-      }
-      m_cbEnterMatch = null;
-      m_eCurGameType = EGameType.UNDEFINED;
+      else
+        FailedEnterRoom();
     }
 
     public void OnConnectedToMaster()

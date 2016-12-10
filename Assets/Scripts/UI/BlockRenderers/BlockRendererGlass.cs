@@ -7,8 +7,7 @@ namespace GameGUI
 {
   public class BlockRendererGlass : BlockRendererBase
   {
-    public Glass      m_glass;
-    public Text       m_pointsText;
+    public Text       m_pointsText = null;
 
 
     //-----------------------------------------------------------------------------------
@@ -17,7 +16,7 @@ namespace GameGUI
     protected override void UpdateImpl()
     {
       //TODO: Move to Callback form glass
-      if (!m_glass || !m_block)
+      if (m_glass == null || m_block == null)
         return;
 
       RectTransform tf = GetComponent<RectTransform>();

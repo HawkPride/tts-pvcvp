@@ -30,11 +30,14 @@ public class Figure
   public int[,]   Matrix { get { return s_arMatrixByTypeNRot[(int)m_eType, m_nCurRot]; } }
 
 
+  static Figure()
+  {
+    InitFigures();
+  }
+
   //-----------------------------------------------------------------------------------
   public Figure( EType eType )
   {
-    InitFigures();
-
     m_eType = eType;
   }
 
@@ -59,9 +62,6 @@ public class Figure
   //-----------------------------------------------------------------------------------
   static void InitFigures()
   {
-    if (s_arMatrixByTypeNRot != null)
-      return;
-
     s_arMatrixByTypeNRot = new int [(int)EType.COUNT, 4][,];
 
     for (int i = 0; i < (int)EType.COUNT; i++)

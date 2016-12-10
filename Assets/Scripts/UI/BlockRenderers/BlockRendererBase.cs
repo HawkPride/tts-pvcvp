@@ -12,7 +12,8 @@ namespace GameGUI
     protected List<GameObject> m_arFreeBlocks    = new List<GameObject>();
 
     //Public
-    public GameObject m_block;
+    public GameObject m_block = null;
+    public Glass      m_glass = null;
 
 
 
