@@ -17,9 +17,13 @@ namespace GameGUI.States
 
   public class GamePvp1x1 : GameState
   {
+    public BlockRendererGlass   m_glassRend;
+    public BlockRendererPreview m_glassPrev;
 
-    public Glass m_ownerGlass;
-    public Glass m_otherGlass;
+    public BlockRendererGlass   m_glassOpponentRend;
+
+    Glass m_localGlass;
+    Glass m_otherGlass;
 
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
@@ -30,24 +34,45 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      m_ownerGlass.m_listenerGameEnd += OnGameEnd;
+      //Local
+      m_localGlass = new Glass();
+      m_localGlass.Init();
+
+      m_localGlass.m_delGameEnd += (() => { OnGameEnd(false); });
+
+      InputProvider ip = GetComponent<InputProvider>();
+      if (ip != null)
+        ip.m_delEvent += m_localGlass.OnInputEvent;
+
+      if (m_glassRend != null)
+        m_glassRend.m_glass = m_localGlass;
+      if (m_glassPrev != null)
+        m_glassPrev.m_glass = m_localGlass;
+
+      //Other
+      m_otherGlass = new Glass();
+      m_otherGlass.Init();
+      m_otherGlass.m_delGameEnd += (() => { OnGameEnd(true); });
+
+      if (m_glassOpponentRend != null)
+        m_glassOpponentRend.m_glass = m_otherGlass;
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnUpdate()
     {
-
+      m_localGlass.Update();
+      m_otherGlass.Update();
 
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
-      m_ownerGlass.m_listenerGameEnd -= OnGameEnd;
     }
 
     //-----------------------------------------------------------------------------------
-    public void OnGameEnd()
+    public void OnGameEnd(bool bOther)
     {
       /*StatsProviderBase sp = Game.Instance.Stats;
       sp.m_nGamesPlayed++;

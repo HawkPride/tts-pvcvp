@@ -48,6 +48,12 @@ namespace GameGUI.States
     }
 
     //-----------------------------------------------------------------------------------
+    public void OnPlayPvp()
+    {
+      Game.Instance.Ui.SwitchToState(new WaitingGameParams());
+    }
+
+    //-----------------------------------------------------------------------------------
     public void OnScore()
     {
       Game.Instance.Ui.SwitchToState(new PlayersScoreParams(1));
@@ -68,8 +74,7 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public void OnTest()
     {
-      Game.Instance.NetMan.Connect();
-
+      
     }
 
   }

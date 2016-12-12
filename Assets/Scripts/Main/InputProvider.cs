@@ -21,7 +21,7 @@ public class InputProvider : MonoBehaviour
 
 
   public delegate void OnInputEvent(int nKey, bool bDown);
-  public OnInputEvent m_eventListeners;
+  public OnInputEvent m_delEvent;
 
   public float        m_fInputRepeat    = 0.1f;
 
@@ -76,13 +76,13 @@ public class InputProvider : MonoBehaviour
       if (bNewState != bCurState)
       {
         //m_timer.Reset();
-        m_eventListeners(nKey, bNewState);
+        m_delEvent(nKey, bNewState);
       }
       //Send repeat
       else if (bCurState && bRepeatOk 
         && nKey != (int)EInputAction.ROTATE)
       {
-        m_eventListeners(nKey, true);
+        m_delEvent(nKey, true);
       }
     }
 

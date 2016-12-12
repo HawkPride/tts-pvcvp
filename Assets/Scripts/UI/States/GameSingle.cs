@@ -21,7 +21,7 @@ namespace GameGUI.States
     public BlockRendererGlass   m_glassRend;
     public BlockRendererPreview m_glassPrev;
 
-    public Glass                m_glass;
+    Glass                       m_glass;
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -34,11 +34,11 @@ namespace GameGUI.States
       m_glass = new Glass();
       m_glass.Init();
 
-      m_glass.m_listenerGameEnd += OnGameEnd;
+      m_glass.m_delGameEnd += OnGameEnd;
 
       InputProvider ip = GetComponent<InputProvider>();
       if (ip != null)
-        ip.m_eventListeners += m_glass.OnInputEvent;
+        ip.m_delEvent += m_glass.OnInputEvent;
 
       if (m_glassRend != null)
         m_glassRend.m_glass = m_glass;
@@ -56,12 +56,12 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
-      m_glass.m_listenerGameEnd -= OnGameEnd;
+      m_glass.m_delGameEnd -= OnGameEnd;
 
 
       InputProvider ip = GetComponent<InputProvider>();
       if (ip != null)
-        ip.m_eventListeners -= m_glass.OnInputEvent;
+        ip.m_delEvent -= m_glass.OnInputEvent;
     }
 
     //-----------------------------------------------------------------------------------

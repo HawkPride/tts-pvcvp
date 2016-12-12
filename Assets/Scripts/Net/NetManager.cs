@@ -19,6 +19,9 @@ namespace Net
 
   public class NetManager : IPunCallbacks
   {
+    public NetActionResult m_delConnected  = null;
+    public NetActionResult m_delEnterMatch = null;
+
 
     //-----------------------------------------------------------------------------------
     // Use this for initialization
@@ -41,6 +44,7 @@ namespace Net
 
     }
 
+    //-----------------------------------------------------------------------------------
     public bool Connect()
     {
       m_eCurGameType = EGameType.UNDEFINED;
@@ -50,13 +54,22 @@ namespace Net
       return PhotonNetwork.ConnectUsingSettings(Game.Instance.GetConfig().gameVersion);
     }
 
+    //-----------------------------------------------------------------------------------
+    public void Disconnect()
+    {
+      if (!IsConnected())
+        return;
+      PhotonNetwork.Disconnect();
+    }
+
+    //-----------------------------------------------------------------------------------
     public bool IsConnected()
     {
       return PhotonNetwork.connected;
     }
 
     //-----------------------------------------------------------------------------------
-    public bool EnterMatch(EGameType eType, NetActionResult resultCallback)
+    public bool EnterMatch(EGameType eType)
     {
       Debug.Assert(m_eCurGameType == EGameType.UNDEFINED);
       if (PhotonNetwork.connectionStateDetailed != ClientState.ConnectedToMaster)
@@ -64,7 +77,6 @@ namespace Net
         Debug.Log("EnterMatch: the game is not connected to master");
         return false;
       }
-      m_cbEnterMatch = resultCallback;
       m_eCurGameType = eType;
 
       TypedLobby lobby = new TypedLobby(eType.ToString(), LobbyType.AsyncRandomLobby);
@@ -74,11 +86,8 @@ namespace Net
     //-----------------------------------------------------------------------------------
     void SuccesfullyEnteredRoom()
     {
-      if (m_cbEnterMatch != null)
-      {
-        m_cbEnterMatch.Invoke(true);
-      }
-      m_cbEnterMatch = null;
+      if (m_delEnterMatch != null)
+        m_delEnterMatch(true);
     }
 
     //-----------------------------------------------------------------------------------
@@ -89,9 +98,8 @@ namespace Net
         PhotonNetwork.LeaveLobby();
       else
       {
-        if (m_cbEnterMatch != null)
-          m_cbEnterMatch.Invoke(false);
-        m_cbEnterMatch = null;
+        if (m_delEnterMatch != null)
+          m_delEnterMatch(false);
       }
     }
 
@@ -99,7 +107,7 @@ namespace Net
     //Photon callbacks
     public void OnConnectedToPhoton()
     {
-      
+
     }
 
     public void OnLeftRoom()
@@ -133,20 +141,26 @@ namespace Net
 
     public void OnLeftLobby()
     {
-      FailedEnterRoom();
+      //FailedEnterRoom();
     }
 
     public void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
+      if (m_delConnected != null)
+        m_delConnected(false);
     }
 
     public void OnConnectionFail(DisconnectCause cause)
     {
       FailedEnterRoom();
+      if (m_delConnected != null)
+        m_delConnected(false);
     }
 
     public void OnDisconnectedFromPhoton()
     {
+      if (m_delConnected != null)
+        m_delConnected(false);
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -193,9 +207,9 @@ namespace Net
           Debug.LogError("Unexpected game type " + m_eCurGameType.ToString());
           break;
         }
-
+        opts.IsOpen = true;
         opts.PlayerTtl = 1000;
-        opts.EmptyRoomTtl = 0;
+        opts.EmptyRoomTtl = 1000;
 
         PhotonNetwork.CreateRoom(null, opts, null);
       }
@@ -205,7 +219,8 @@ namespace Net
 
     public void OnConnectedToMaster()
     {
-      EnterMatch(EGameType.PvP1x1, null);
+      if (m_delConnected != null)
+        m_delConnected(true);
     }
 
     public void OnPhotonMaxCccuReached()
@@ -247,7 +262,6 @@ namespace Net
     //End of Photon callbacks
 
     EGameType       m_eCurGameType = EGameType.UNDEFINED;
-    NetActionResult m_cbEnterMatch = null;
 
   }
 }

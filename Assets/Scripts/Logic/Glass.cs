@@ -17,8 +17,8 @@ public class Glass
 
   //Public
 
-  public int    m_nSizeX              = 11;
-  public int    m_nSizeY              = 25;
+  public int    m_nSizeX              = 10;
+  public int    m_nSizeY              = 20;
   public float  m_fStartStep          = 0.8f;
   public float  m_fDifficultyMult     = 0.8f;
   public int    m_nDifficultyLinesInc = 5; 
@@ -37,8 +37,8 @@ public class Glass
   public delegate void OnGameEnd();
   public delegate void OnRowDeleted(int nCount);
 
-  public OnGameEnd    m_listenerGameEnd;
-  public OnRowDeleted m_listenerRowDeleted;
+  public OnGameEnd    m_delGameEnd;
+  public OnRowDeleted m_delRowDeleted;
 
   //Unity Events
   //-----------------------------------------------------------------------------------
@@ -188,8 +188,8 @@ public class Glass
       else
       {
         m_bEnd = true;
-        if (m_listenerGameEnd != null)
-          m_listenerGameEnd();
+        if (m_delGameEnd != null)
+          m_delGameEnd();
         return;
       }
     }
@@ -309,8 +309,8 @@ public class Glass
       m_nTotalRawsDone += nLinesFound;
       UpdateTimeInterval();
 
-      if (m_listenerRowDeleted != null)
-        m_listenerRowDeleted(nLinesFound);
+      if (m_delRowDeleted != null)
+        m_delRowDeleted(nLinesFound);
       return true;
     }
     return false;

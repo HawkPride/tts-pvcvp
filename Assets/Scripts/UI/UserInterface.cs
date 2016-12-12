@@ -20,7 +20,9 @@ namespace GameGUI
     {
       string strSceneName = stateParams.GetSceneName();
       if (strSceneName.Length > 0)
+      {
         SceneManager.LoadScene(strSceneName);
+      }
       //else
       //TODO: error
     }
