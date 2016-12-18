@@ -1,5 +1,8 @@
-﻿namespace Math
+﻿using System;
+
+namespace Math
 {
+  [Serializable]
   public class VecInt2
   {
     public int x = 0;

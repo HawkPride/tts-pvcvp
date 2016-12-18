@@ -14,8 +14,9 @@ namespace GameGUI
     //-----------------------------------------------------------------------------------
     protected override void UpdateImpl()
     {
+      Logic.GlassLocal glass = (Logic.GlassLocal)m_glass;
       //TODO: Move to Callback form glass
-      if (m_glass == null || m_block == null)
+      if (glass == null || m_block == null)
         return;
 
       RectTransform tf = GetComponent<RectTransform>();
@@ -24,7 +25,7 @@ namespace GameGUI
       float fSizeX = tf.rect.width/PREVIEW_SIZE;
       float fSizeY = tf.rect.height/PREVIEW_SIZE;
 
-      Figure fig = m_glass.NextFigure;
+      Logic.Figure fig = glass.NextFigure;
       var mtx = fig.Matrix;
       VecInt2 vCenter = fig.GetCenterPoint();
 

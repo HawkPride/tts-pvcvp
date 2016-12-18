@@ -28,6 +28,7 @@ namespace Net
     public void Init()
     {
       PhotonNetwork.messageListener = this;
+      CustomTypes.Register();
     }
 
     //-----------------------------------------------------------------------------------

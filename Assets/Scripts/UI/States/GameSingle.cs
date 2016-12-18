@@ -21,7 +21,7 @@ namespace GameGUI.States
     public BlockRendererGlass   m_glassRend;
     public BlockRendererPreview m_glassPrev;
 
-    Glass                       m_glass;
+    Logic.GlassLocal            m_glass;
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -31,7 +31,7 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      m_glass = new Glass();
+      m_glass = new Logic.GlassLocal(null);
       m_glass.Init();
 
       m_glass.m_delGameEnd += OnGameEnd;

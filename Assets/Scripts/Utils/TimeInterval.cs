@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-class TimeInterval
+public class TimeInterval
 {
   public TimeInterval(float fInterval)
   {

@@ -22,8 +22,12 @@ namespace GameGUI.States
 
     public BlockRendererGlass   m_glassOpponentRend;
 
-    Glass m_localGlass;
-    Glass m_otherGlass;
+    Logic.GlassLocal  m_localGlass;
+    Logic.GlassRemote m_otherGlass;
+
+    Net.GameSync  m_gameSync;
+    TimeInterval  m_syncInterval;
+    int           m_nCounter = 0;
 
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
@@ -34,8 +38,11 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
+      m_gameSync = GetComponent<Net.GameSync>();
+
+
       //Local
-      m_localGlass = new Glass();
+      m_localGlass = new Logic.GlassLocal(m_gameSync);
       m_localGlass.Init();
 
       m_localGlass.m_delGameEnd += (() => { OnGameEnd(false); });
@@ -50,12 +57,15 @@ namespace GameGUI.States
         m_glassPrev.m_glass = m_localGlass;
 
       //Other
-      m_otherGlass = new Glass();
+      m_otherGlass = new Logic.GlassRemote(m_gameSync);
       m_otherGlass.Init();
       m_otherGlass.m_delGameEnd += (() => { OnGameEnd(true); });
 
       if (m_glassOpponentRend != null)
         m_glassOpponentRend.m_glass = m_otherGlass;
+
+      m_syncInterval = new TimeInterval(1.0f);
+
     }
 
     //-----------------------------------------------------------------------------------
@@ -63,6 +73,12 @@ namespace GameGUI.States
     {
       m_localGlass.Update();
       m_otherGlass.Update();
+
+      if (m_syncInterval.StartNewInterval())
+      {
+        if (m_gameSync != null)
+          m_gameSync.SendData(m_nCounter++);
+      }
 
     }
 

@@ -30,7 +30,7 @@ namespace GameGUI
       {
         for (int y = 0; y < m_glass.m_nSizeY; y++)
         {
-          Block fieldBlock = field[x, y];
+          Logic.Block fieldBlock = field[x, y];
           if (fieldBlock != null)
           {
             GameObject block = GetNextBlock();
@@ -41,7 +41,7 @@ namespace GameGUI
             btf.anchoredPosition = new Vector3(fSizeX * (x - fCenterX), fSizeY * (y - fCenterY));
             btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fSizeX);
             btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fSizeY);
-            if (fieldBlock.m_eType == Block.EType.COLLAPSING)
+            if (fieldBlock.m_eType == Logic.Block.EType.COLLAPSING)
               block.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
             else
               block.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);

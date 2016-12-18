@@ -1,13 +1,17 @@
 ﻿
-public class Block
+//-----------------------------------------------------------------------------------
+namespace Logic
 {
-  public enum EType
+  public class Block
   {
-    WHILE,
-    RED,
+    public enum EType
+    {
+      WHILE,
+      RED,
 
-    COLLAPSING,
+      COLLAPSING,
+    }
+
+    public EType m_eType = EType.WHILE;
   }
-
-  public EType m_eType = EType.WHILE;
 }
