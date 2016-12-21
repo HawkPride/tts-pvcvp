@@ -28,7 +28,7 @@ namespace GameGUI
     //-----------------------------------------------------------------------------------
     public static void Create(Canvas pParent, string strMessage, EType eType, UnityAction delYes = null, UnityAction delNo = null)
     {
-      var config = Game.Instance.GetConfig();
+      var config = Game.instance.config();
       if (!config.messageBox)
         return;
 

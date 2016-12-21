@@ -12,6 +12,8 @@ namespace Logic
       COLLAPSING,
     }
 
-    public EType m_eType = EType.WHILE;
+    public EType type { get { return m_eType;  } set { m_eType = value; } }
+
+    EType m_eType = EType.WHILE;
   }
 }

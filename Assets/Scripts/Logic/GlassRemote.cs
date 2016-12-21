@@ -5,40 +5,37 @@ using Math;
 //-----------------------------------------------------------------------------------
 namespace Logic
 {
-  public class GlassRemote : Glass, Net.IGameSyncInterface
+  public class GlassRemote : Glass
   {
-    Net.GameSync  m_netSync;
-
-    //-----------------------------------------------------------------------------------
-    public GlassRemote(Net.GameSync netSync)
-    {
-      m_netSync = netSync;
-      m_netSync.AddReceiver(this);
-    }
-
     //-----------------------------------------------------------------------------------
     protected override void ProcessOneStep()
     {
       DrawCurrentFigure(false);
-      m_vCurFigurePos = new VecInt2(m_vCurFigurePos.x, m_vCurFigurePos.y - 1);
+      if (m_curFigure != null)
+      {
+        VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x, m_curFigure.pos.y - 1);
+        if (CheckFigurePos(vNewPos))
+          m_curFigure.pos = vNewPos;
+        //Wait for end step from remote client
+      }
       //Draw anyway
       DrawCurrentFigure(true);
     }
 
     //-----------------------------------------------------------------------------------
-    public virtual void NewFigure(Figure.EType eType, GameSyncPos curFigurePos)
+    public void NewFigure(Figure.EType eType, Net.PosRot curFigurePos)
     {
       DrawCurrentFigure(false);
       m_curFigure = new Figure(eType);
-      SetPos(curFigurePos);
+      SetPos(ref curFigurePos);
       DrawCurrentFigure(true);
     }
 
     //-----------------------------------------------------------------------------------
-    public virtual void SendPos(GameSyncPos curFigurePos, bool bFinal)
+    public void SetPos(Net.PosRot curFigurePos, bool bFinal)
     {
       DrawCurrentFigure(false);
-      SetPos(curFigurePos);
+      SetPos(ref curFigurePos);
       DrawCurrentFigure(true);
       if (bFinal)
       {
@@ -49,12 +46,14 @@ namespace Logic
     }
 
     //-----------------------------------------------------------------------------------
-    void SetPos(GameSyncPos pos)
+    void SetPos(ref Net.PosRot curFigurePos)
     {
-      m_vCurFigurePos.x = pos.posX;
-      m_vCurFigurePos.y = pos.posY;
       if (m_curFigure != null)
-        m_curFigure.Rotation = pos.rot;
+      {
+        m_curFigure.pos.x = curFigurePos.x;
+        m_curFigure.pos.y = curFigurePos.y;
+        m_curFigure.rot   = curFigurePos.r;
+      }
     }
   }
 }

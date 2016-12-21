@@ -3,5 +3,5 @@
 
 public class GameResults
 { 
-  public int Score { get; set; }
+  public int score { get; set; }
 }

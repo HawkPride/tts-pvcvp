@@ -22,13 +22,8 @@ namespace GameGUI.States
 
     public BlockRendererGlass   m_glassOpponentRend;
 
-    Logic.GlassLocal  m_localGlass;
-    Logic.GlassRemote m_otherGlass;
-
-    Net.GameSync  m_gameSync;
-    TimeInterval  m_syncInterval;
-    int           m_nCounter = 0;
-
+    public Net.PlayerGlass      m_localPlayer;
+    public Net.PlayerGlass      m_otherPlayer;
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -38,47 +33,32 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      m_gameSync = GetComponent<Net.GameSync>();
+      PhotonNetwork.isMessageQueueRunning = true;
 
+      GameObject go = PhotonNetwork.Instantiate("PlayerGlass", Vector3.zero, Quaternion.identity, 0);
+      if (go != null)
+        m_localPlayer = go.GetComponent<Net.PlayerGlass>();
+      if (m_localPlayer == null)
+      {
+        Debug.LogError("Unable to create player");
+        return;
+      }
+      Logic.Glass glass = m_localPlayer.glass;
 
-      //Local
-      m_localGlass = new Logic.GlassLocal(m_gameSync);
-      m_localGlass.Init();
+      glass.m_delGameEnd += (() => { OnGameEnd(false); });
 
-      m_localGlass.m_delGameEnd += (() => { OnGameEnd(false); });
-
-      InputProvider ip = GetComponent<InputProvider>();
-      if (ip != null)
-        ip.m_delEvent += m_localGlass.OnInputEvent;
 
       if (m_glassRend != null)
-        m_glassRend.m_glass = m_localGlass;
+        m_glassRend.m_glass = glass;
       if (m_glassPrev != null)
-        m_glassPrev.m_glass = m_localGlass;
-
-      //Other
-      m_otherGlass = new Logic.GlassRemote(m_gameSync);
-      m_otherGlass.Init();
-      m_otherGlass.m_delGameEnd += (() => { OnGameEnd(true); });
-
-      if (m_glassOpponentRend != null)
-        m_glassOpponentRend.m_glass = m_otherGlass;
-
-      m_syncInterval = new TimeInterval(1.0f);
+        m_glassPrev.m_glass = glass;
 
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnUpdate()
     {
-      m_localGlass.Update();
-      m_otherGlass.Update();
-
-      if (m_syncInterval.StartNewInterval())
-      {
-        if (m_gameSync != null)
-          m_gameSync.SendData(m_nCounter++);
-      }
+      UpdateOtherPlayer();
 
     }
 
@@ -88,7 +68,7 @@ namespace GameGUI.States
     }
 
     //-----------------------------------------------------------------------------------
-    public void OnGameEnd(bool bOther)
+    void OnGameEnd(bool bOther)
     {
       /*StatsProviderBase sp = Game.Instance.Stats;
       sp.m_nGamesPlayed++;
@@ -101,7 +81,7 @@ namespace GameGUI.States
     }
 
     //-----------------------------------------------------------------------------------
-    public void OnHighScore()
+    void OnHighScore()
     {
       /*GameResults res = new GameResults();
       res.Score = m_ownerGlass.Score;
@@ -110,10 +90,35 @@ namespace GameGUI.States
     }
 
     //-----------------------------------------------------------------------------------
-    public void OnGameOver()
+    void OnGameOver()
     {
       /*Game.Instance.Stats.Save();
       Game.Instance.Ui.SwitchToState(new MainMenuParams());*/
+    }
+
+    //-----------------------------------------------------------------------------------
+    void UpdateOtherPlayer()
+    {
+      if (m_otherPlayer != null)
+        return;
+
+      PhotonPlayer player = PhotonNetwork.player;
+      if (player == null)
+        return;
+
+      foreach (var it in Game.instance.netMan.players)
+      {
+        if (it.photonView.ownerId != player.ID)
+        {
+          m_otherPlayer = it;
+          m_otherPlayer.glass.m_delGameEnd += (() => { OnGameEnd(true); });
+          if (m_glassOpponentRend != null)
+            m_glassOpponentRend.m_glass = m_otherPlayer.glass;
+
+          return;
+        }
+
+      }
     }
   }
 }

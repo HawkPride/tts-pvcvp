@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Math;
+using System;
 
 
 //-----------------------------------------------------------------------------------
@@ -11,7 +12,6 @@ namespace Logic
     //Protected
     protected Block[,]      m_arField;
     protected Figure        m_curFigure;
-    protected VecInt2       m_vCurFigurePos = new VecInt2(0, 0);
     protected bool          m_bEnd;
     protected TimeInterval  m_stepTimer;
     protected int           m_nCurrPoints = 0;
@@ -25,21 +25,22 @@ namespace Logic
     public float  m_fDifficultyMult     = 0.8f;
     public int    m_nDifficultyLinesInc = 5;
 
-    public Block[,] Field { get { return m_arField; } }
-    public int Score { get { return m_nCurrPoints; } }
+    public Block[,] field { get { return m_arField; } }
+    public int score { get { return m_nCurrPoints; } }
+    public Figure figure { get { return m_curFigure; } }
 
-    public float FrameTime
+    public float frameTime
     {
-      get { return m_stepTimer.Interval; }
-      set { m_stepTimer.Interval = value; }
+      get { return m_stepTimer.interval; }
+      set { m_stepTimer.interval = value; }
     }
 
     //Events
     public delegate void OnGameEnd();
     public delegate void OnRowDeleted(int nCount);
 
-    public OnGameEnd    m_delGameEnd;
-    public OnRowDeleted m_delRowDeleted;
+    public OnGameEnd      m_delGameEnd;
+    public OnRowDeleted   m_delRowDeleted;
 
     //Unity Events
     //-----------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     // Update is called once per frame
     //-----------------------------------------------------------------------------------
-    public void Update()
+    public virtual void Update()
     {
       if (m_bEnd)
         return;
@@ -85,7 +86,7 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     // Functions
     //-----------------------------------------------------------------------------------
-    protected void ProcessInput(int nKey, bool bDown)
+    public void ProcessInput(int nKey, bool bDown)
     {
       if (m_bEnd)
         return;
@@ -96,18 +97,18 @@ namespace Logic
       if (nKey == (int)InputProvider.EInputAction.ROTATE && bDown)
       {
         m_curFigure.Rotate(1);
-        if (!CheckFigurePos(m_vCurFigurePos))
+        if (!CheckFigurePos(m_curFigure.pos))
         {
           //Try move left-right to fit it
-          int nSizeX = m_curFigure.Matrix.GetLength(0);
+          int nSizeX = m_curFigure.matrix.GetLength(0);
           int nOffsetX = -nSizeX/2;
           bool bOk = false;
           for (int x = 0; x < nSizeX; x++)
           {
-            VecInt2 vNewPos = new VecInt2(m_vCurFigurePos.x + x + nOffsetX, m_vCurFigurePos.y);
+            VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x + x + nOffsetX, m_curFigure.pos.y);
             if (CheckFigurePos(vNewPos))
             {
-              m_vCurFigurePos = vNewPos;
+              m_curFigure.pos = vNewPos;
               bOk = true;
               break;
             }
@@ -118,15 +119,15 @@ namespace Logic
       }
       else if (nKey == (int)InputProvider.EInputAction.LEFT && bDown)
       {
-        VecInt2 vNewPos = new VecInt2(m_vCurFigurePos.x - 1, m_vCurFigurePos.y);
+        VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x - 1, m_curFigure.pos.y);
         if (CheckFigurePos(vNewPos))
-          m_vCurFigurePos = vNewPos;
+          m_curFigure.pos = vNewPos;
       }
       else if (nKey == (int)InputProvider.EInputAction.RIGHT && bDown)
       {
-        VecInt2 vNewPos = new VecInt2(m_vCurFigurePos.x + 1, m_vCurFigurePos.y);
+        VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x + 1, m_curFigure.pos.y);
         if (CheckFigurePos(vNewPos))
-          m_vCurFigurePos = vNewPos;
+          m_curFigure.pos = vNewPos;
       }
       else if (nKey == (int)InputProvider.EInputAction.DOWN)
       {
@@ -145,7 +146,7 @@ namespace Logic
     protected void UpdateTimeInterval()
     {
       int nDiff = m_nTotalRawsDone/m_nDifficultyLinesInc;
-      FrameTime = m_fStartStep * Mathf.Pow(m_fDifficultyMult, nDiff);
+      frameTime = m_fStartStep * Mathf.Pow(m_fDifficultyMult, nDiff);
     }
 
 
@@ -156,9 +157,9 @@ namespace Logic
       if (m_curFigure == null)
         return;
 
-      VecInt2 vStartPos = m_vCurFigurePos - m_curFigure.GetCenterPoint();
+      VecInt2 vStartPos = m_curFigure.pos - m_curFigure.GetCenterPoint();
 
-      var mtx = m_curFigure.Matrix;
+      var mtx = m_curFigure.matrix;
       for (int x = 0; x < mtx.GetLength(0); x++)
         for (int y = 0; y < mtx.GetLength(1); y++)
         {
@@ -189,7 +190,7 @@ namespace Logic
 
       VecInt2 vStartPos = vCurrPos - m_curFigure.GetCenterPoint();
 
-      var mtx = m_curFigure.Matrix;
+      var mtx = m_curFigure.matrix;
       for (int x = 0; x < mtx.GetLength(0); x++)
         for (int y = 0; y < mtx.GetLength(1); y++)
         {
@@ -226,9 +227,9 @@ namespace Logic
         int nNumFullBlocks = 0;
         for (int x = 0; x < m_nSizeX; x++)
         {
-          Block blk = Field[x, y];
+          Block blk = field[x, y];
           if (blk != null &&
-            blk.m_eType != Block.EType.COLLAPSING)
+            blk.type != Block.EType.COLLAPSING)
           {
             nNumFullBlocks++;
           }
@@ -239,7 +240,7 @@ namespace Logic
           nPoints *= 2;
           //Mark as collapsing
           for (int x = 0; x < m_nSizeX; x++)
-            Field[x, y].m_eType = Block.EType.COLLAPSING;
+            field[x, y].type = Block.EType.COLLAPSING;
         }
       }
 
@@ -268,13 +269,13 @@ namespace Logic
         {
           Block srcBlock = null;
           if (nSourceY < m_nSizeY)
-            srcBlock = Field[x, nSourceY];
+            srcBlock = field[x, nSourceY];
           //If this block colapsing, go to next
-          if (srcBlock != null && srcBlock.m_eType == Block.EType.COLLAPSING)
+          if (srcBlock != null && srcBlock.type == Block.EType.COLLAPSING)
             nSourceY++;
           else
           {
-            Field[x, nTargetY] = srcBlock;
+            field[x, nTargetY] = srcBlock;
             nSourceY++;
             nTargetY++;
           }

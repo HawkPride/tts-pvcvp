@@ -125,7 +125,7 @@
     <Compile Include="Assets\Scripts\Net\CustomTypes.cs" />
     <Compile Include="Assets\Scripts\Net\GameSync.cs" />
     <Compile Include="Assets\Scripts\Net\NetManager.cs" />
-    <Compile Include="Assets\Scripts\Net\Player.cs" />
+    <Compile Include="Assets\Scripts\Net\PlayerGlass.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererBase.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererGlass.cs" />
     <Compile Include="Assets\Scripts\UI\BlockRenderers\BlockRendererPreview.cs" />
@@ -140,6 +140,7 @@
     <Compile Include="Assets\Scripts\UI\States\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\States\PlayersScore.cs" />
     <Compile Include="Assets\Scripts\UI\States\WaitingGame.cs" />
+    <Compile Include="Assets\Scripts\UI\UiButtonsToInputProvider.cs" />
     <Compile Include="Assets\Scripts\UI\UiPlatformSwitcher.cs" />
     <Compile Include="Assets\Scripts\UI\UserInterface.cs" />
     <Compile Include="Assets\Scripts\Utils\TimeInterval.cs" />

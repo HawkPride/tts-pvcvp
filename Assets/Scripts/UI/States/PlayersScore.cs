@@ -31,8 +31,8 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      StatsProviderBase sp = Game.Instance.Stats;
-      if (Game.Instance.Results == null)
+      StatsProviderBase sp = Game.instance.stats;
+      if (Game.instance.results == null)
       {
         m_nInputIndex = -1;
         var res = sp.GetCurStats(0, 10);
@@ -44,11 +44,11 @@ namespace GameGUI.States
       }
       else
       {
-        m_gameResults = Game.Instance.Results;
+        m_gameResults = Game.instance.results;
         //Clear results
-        Game.Instance.Results = null;
+        Game.instance.results = null;
         //Add new results
-        m_nInputIndex = sp.GetNewScoreIndex(m_gameResults.Score);
+        m_nInputIndex = sp.GetNewScoreIndex(m_gameResults.score);
         //The results in high score
         if (m_nInputIndex >= 0)
         {
@@ -60,7 +60,7 @@ namespace GameGUI.States
             if (i == m_nInputIndex)
             {
               var newRes = new StatsProviderBase.Stats();
-              newRes.m_nScore = m_gameResults.Score;
+              newRes.m_nScore = m_gameResults.score;
               newRes.m_strPlayerName = "Enter Name";
               item.SetAsInput(newRes);
             }
@@ -69,7 +69,7 @@ namespace GameGUI.States
           }
         }
         else
-          Game.Instance.Ui.SwitchToState(new MainMenuParams());
+          Game.instance.ui.SwitchToState(new MainMenuParams());
       }
     }
 
@@ -93,15 +93,15 @@ namespace GameGUI.States
         var item = m_scrollView.GetListItem<PlayersScoreItem>(m_nInputIndex);
         var newRes = new StatsProviderBase.Stats();
         newRes.m_strPlayerName = item.GetName();
-        newRes.m_nScore = m_gameResults.Score;
-        StatsProviderBase sp = Game.Instance.Stats;
+        newRes.m_nScore = m_gameResults.score;
+        StatsProviderBase sp = Game.instance.stats;
         if (sp.AddStats(newRes))
           sp.Save();
       }
       m_nInputIndex = -1;
-      Game.Instance.Results = null;
+      Game.instance.results = null;
 
-      Game.Instance.Ui.SwitchToState(new MainMenuParams());
+      Game.instance.ui.SwitchToState(new MainMenuParams());
     }
   }
 

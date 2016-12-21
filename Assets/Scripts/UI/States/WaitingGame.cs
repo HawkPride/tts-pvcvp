@@ -25,18 +25,23 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      NetManager net = Game.Instance.NetMan;
+      NetManager net = Game.instance.netMan;
       net.m_delConnected += OnConnected;
       net.m_delEnterMatch += OnEnteredRoom;
 
-      Game.Instance.NetMan.Connect();
+      Game.instance.netMan.Connect();
 
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnUpdate()
     {
-
+      Room room = PhotonNetwork.room;
+      if (room != null && room.playerCount == 2)
+      {
+        PhotonNetwork.isMessageQueueRunning = false;
+        Game.instance.ui.SwitchToState(new GamePvp1x1Params());
+      }
 
     }
 
@@ -50,7 +55,7 @@ namespace GameGUI.States
     void OnConnected(bool bRes)
     {
       if (bRes)
-        Game.Instance.NetMan.EnterMatch(EGameType.PvP1x1);
+        Game.instance.netMan.EnterMatch(EGameType.PvP1x1);
       else
         Disconnect();
     }
@@ -61,7 +66,7 @@ namespace GameGUI.States
       if (bRes)
       {
         //Switch to game
-        Game.Instance.Ui.SwitchToState(new GamePvp1x1Params());
+        
       }
       else
         Disconnect();
@@ -70,16 +75,16 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     void Disconnect()
     {
-      Game.Instance.NetMan.Disconnect();
+      Game.instance.netMan.Disconnect();
       Unsubscribe();
       MessageBox.Create(GetCanvas(), "Connection lost", MessageBox.EType.OK, 
-        () => { Game.Instance.Ui.SwitchToState(new MainMenuParams()); } );
+        () => { Game.instance.ui.SwitchToState(new MainMenuParams()); } );
     }
 
     //-----------------------------------------------------------------------------------
     void Unsubscribe()
     {
-      NetManager net = Game.Instance.NetMan;
+      NetManager net = Game.instance.netMan;
       net.m_delConnected -= OnConnected;
       net.m_delEnterMatch -= OnEnteredRoom;
     }

@@ -23,6 +23,8 @@ namespace Net
     public NetActionResult m_delEnterMatch = null;
 
 
+    public List<PlayerGlass> players { get { return m_arPlayers;  } }
+
     //-----------------------------------------------------------------------------------
     // Use this for initialization
     public void Init()
@@ -52,7 +54,7 @@ namespace Net
       //Already connected
       if (PhotonNetwork.connected)
         return true;
-      return PhotonNetwork.ConnectUsingSettings(Game.Instance.GetConfig().gameVersion);
+      return PhotonNetwork.ConnectUsingSettings(Game.instance.config().gameVersion);
     }
 
     //-----------------------------------------------------------------------------------
@@ -262,7 +264,7 @@ namespace Net
 
     //End of Photon callbacks
 
-    EGameType       m_eCurGameType = EGameType.UNDEFINED;
-
+    EGameType         m_eCurGameType = EGameType.UNDEFINED;
+    List<PlayerGlass> m_arPlayers    = new List<PlayerGlass>();
   }
 }

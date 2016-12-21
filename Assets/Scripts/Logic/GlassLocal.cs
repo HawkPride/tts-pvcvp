@@ -8,15 +8,19 @@ namespace Logic
   {
     //Private
     Figure        m_nextFigure;
-    Net.GameSync  m_netSync;
 
-    public Figure NextFigure { get { return m_nextFigure; } }
+    public Figure nextFigure { get { return m_nextFigure; } }
 
+    //Events
+    public delegate void GlassEvent();
+
+    public GlassEvent   m_delNewFigure;
+    public GlassEvent   m_delChangePos;
+    public GlassEvent   m_delFigurePlaced;
 
     //-----------------------------------------------------------------------------------
-    public GlassLocal(Net.GameSync netSync)
+    public GlassLocal()
     {
-      m_netSync = netSync;
     }
 
     //-----------------------------------------------------------------------------------
@@ -45,11 +49,10 @@ namespace Logic
         if (CheckFigurePos(vNextPos))
         {
           CreateNextFigure();
-          m_vCurFigurePos = vNextPos;
+          m_curFigure.pos = vNextPos;
 
-
-          if (m_netSync != null)
-            m_netSync.NewFigure(m_curFigure.Type, GetPos());
+          if (m_delNewFigure != null)
+            m_delNewFigure();
         }
         else
         {
@@ -60,17 +63,21 @@ namespace Logic
         }
       }
 
-      VecInt2 vNewPos = new VecInt2(m_vCurFigurePos.x, m_vCurFigurePos.y - 1);
+      VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x, m_curFigure.pos.y - 1);
       bool bStillGo = CheckFigurePos(vNewPos);
       if (bStillGo)
-        m_vCurFigurePos = vNewPos;
+      {
+        m_curFigure.pos = vNewPos;
+        if (m_delChangePos != null)
+          m_delChangePos();
+      }
       //Draw anyway
       DrawCurrentFigure(true);
       //The figure is in place
       if (!bStillGo)
       {
-        if (m_netSync != null)
-          m_netSync.SendPos(GetPos(), true);
+        if (m_delFigurePlaced != null)
+          m_delFigurePlaced();
         m_curFigure = null;
         if (FindFullLines())
           CollapseLines();
@@ -92,20 +99,17 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     public void OnInputEvent(int nKey, bool bDown)
     {
+      if (m_curFigure == null)
+        return;
+      VecInt2 vOldPos = new VecInt2(m_curFigure.pos);
+      int nOldRot = m_curFigure != null ? m_curFigure.rot : 0;
+
       ProcessInput(nKey, bDown);
 
-      if (m_netSync != null)
-        m_netSync.SendPos(GetPos(), false);
-    }
-
-    //-----------------------------------------------------------------------------------
-    Net.GameSyncPos GetPos()
-    {
-      Net.GameSyncPos data;
-      data.posX = m_vCurFigurePos.x;
-      data.posY = m_vCurFigurePos.y;
-      data.rot = m_curFigure.Rotation;
-      return data;
+      int nRot = m_curFigure != null ? m_curFigure.rot : 0;
+      if (vOldPos != m_curFigure.pos || nOldRot != nRot)
+        if (m_delChangePos != null)
+          m_delChangePos();
     }
   }
 }

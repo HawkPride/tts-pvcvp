@@ -17,7 +17,7 @@ namespace GameGUI
     //-----------------------------------------------------------------------------------
     public static void Create(Canvas pParent, string strMessage, UnityAction delEndCallback = null, float fShowTime = 3.0f)
     {
-      var config = Game.Instance.GetConfig();
+      var config = Game.instance.config();
       if (!config.gameMessage)
         return;
 

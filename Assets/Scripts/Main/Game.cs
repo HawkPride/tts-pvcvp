@@ -4,18 +4,18 @@ using GameGUI;
 
 public class Game
 {
-  public static Game Instance { get { if (s_game == null) CreateGame(); return s_game; } }
+  public static Game instance { get { if (s_game == null) CreateGame(); return s_game; } }
 
-  public UserInterface Ui { get { return m_ui; } }
-  public Data.GameData GetConfig() { return m_gameData;  }
+  public UserInterface ui { get { return m_ui; } }
+  public Data.GameData config() { return m_gameData;  }
 
-  public GameResults Results { get { return m_results; } set { m_results = value; } }
+  public GameResults results { get { return m_results; } set { m_results = value; } }
 
-  public StatsProviderBase Stats { get { return m_stats; } }
+  public StatsProviderBase stats { get { return m_stats; } }
 
-  public Ads.AdsManager AdsMan { get { return m_adsMan; } }
+  public Ads.AdsManager adsMan { get { return m_adsMan; } }
 
-  public Net.NetManager NetMan { get { return m_netMan; } }
+  public Net.NetManager netMan { get { return m_netMan; } }
 
   //-----------------------------------------------------------------------------------
   public static void CreateGame()

@@ -10,12 +10,12 @@ public class Main : MonoBehaviour
   {
     DontDestroyOnLoad(gameObject);
 
-    Game.Instance.Init(m_gameData);
+    Game.instance.Init(m_gameData);
   }
 
   // Update is called once per frame
   void Update()
   {
-    Game.Instance.Update();
+    Game.instance.Update();
   }
 }

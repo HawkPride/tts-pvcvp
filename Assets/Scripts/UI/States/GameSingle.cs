@@ -20,8 +20,7 @@ namespace GameGUI.States
 
     public BlockRendererGlass   m_glassRend;
     public BlockRendererPreview m_glassPrev;
-
-    Logic.GlassLocal            m_glass;
+    public Net.PlayerGlass      m_player;
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -31,46 +30,49 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      m_glass = new Logic.GlassLocal(null);
-      m_glass.Init();
+      PhotonNetwork.offlineMode = true;
+      PhotonNetwork.CreateRoom("room");
 
-      m_glass.m_delGameEnd += OnGameEnd;
+      GameObject go = PhotonNetwork.Instantiate("PlayerGlass", Vector3.zero, Quaternion.identity, 0);
+      if (go != null)
+        m_player = go.GetComponent<Net.PlayerGlass>();
+      if (m_player == null)
+      {
+        Debug.LogError("Unable to create player");
+        return;
+      }
+      Logic.Glass glass = m_player.glass;
 
-      InputProvider ip = GetComponent<InputProvider>();
-      if (ip != null)
-        ip.m_delEvent += m_glass.OnInputEvent;
+      glass.m_delGameEnd += OnGameEnd;
 
       if (m_glassRend != null)
-        m_glassRend.m_glass = m_glass;
+        m_glassRend.m_glass = glass;
       if (m_glassPrev != null)
-        m_glassPrev.m_glass = m_glass;
+        m_glassPrev.m_glass = glass;
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnUpdate()
     {
-      m_glass.Update();
-
+     
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
-      m_glass.m_delGameEnd -= OnGameEnd;
+      if (m_player != null)
+        m_player.glass.m_delGameEnd -= OnGameEnd;
 
-
-      InputProvider ip = GetComponent<InputProvider>();
-      if (ip != null)
-        ip.m_delEvent -= m_glass.OnInputEvent;
+      PhotonNetwork.Disconnect();
     }
 
     //-----------------------------------------------------------------------------------
     public void OnGameEnd()
     {
-      StatsProviderBase sp = Game.Instance.Stats;
-      sp.m_nGamesPlayed++;
+      StatsProviderBase sp = Game.instance.stats;
+      sp.gamesPlayed++;
       //New score is not in hi score
-      if (sp.GetNewScoreIndex(m_glass.Score) < 0 || m_glass.Score == 0)
+      if (sp.GetNewScoreIndex(m_player.glass.score) < 0 || m_player.glass.score == 0)
         GameMessage.Create(GetCanvas(), "Game Over", OnGameOver, 1.5f);
       else
         GameMessage.Create(GetCanvas(), "New High Score", OnHighScore, 1.5f);
@@ -81,16 +83,16 @@ namespace GameGUI.States
     public void OnHighScore()
     {
       GameResults res = new GameResults();
-      res.Score = m_glass.Score;
-      Game.Instance.Results = res;
-      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(m_glass.Score));
+      res.score = m_player.glass.score;
+      Game.instance.results = res;
+      Game.instance.ui.SwitchToState(new PlayersScoreParams(m_player.glass.score));
     }
 
     //-----------------------------------------------------------------------------------
     public void OnGameOver()
     {
-      Game.Instance.Stats.Save();
-      Game.Instance.Ui.SwitchToState(new MainMenuParams());
+      Game.instance.stats.Save();
+      Game.instance.ui.SwitchToState(new MainMenuParams());
     }
   }
 }

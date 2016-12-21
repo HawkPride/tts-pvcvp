@@ -5,23 +5,19 @@ using UnityEngine;
 
 namespace Net
 {
-  [Serializable]
-  public struct GameSyncPos
-  {
-    public int posX;
-    public int posY;
-    public int rot;
-  };
+
 
   public interface IGameSyncInterface
   {
+    /*
     void NewFigure(Logic.Figure.EType eType, GameSyncPos curFigurePos);
     void SendPos  (GameSyncPos curFigurePos, bool bFinal);
+    */
   }
 
   public class GameSync : Photon.MonoBehaviour, IGameSyncInterface
   {
-
+    /*
     HashSet<IGameSyncInterface> m_setReceivers = new HashSet<IGameSyncInterface>();
 
     public void AddReceiver(IGameSyncInterface res)
@@ -67,6 +63,7 @@ namespace Net
     void OnSendData(int nData)
     {
       Debug.Log("OnSendData " + nData.ToString());
-    }
+    } */
   }
+ 
 }

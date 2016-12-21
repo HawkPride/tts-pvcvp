@@ -23,9 +23,9 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
-      Game game = Game.Instance;
-      if (game.AdsMan.ShouldShowAd())
-        game.AdsMan.Show();
+      Game game = Game.instance;
+      if (game.adsMan.ShouldShowAd())
+        game.adsMan.Show();
     }
 
     //-----------------------------------------------------------------------------------
@@ -37,26 +37,26 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
-      Game.Instance.AdsMan.CancelShow();
+      Game.instance.adsMan.CancelShow();
     }
 
 
     //-----------------------------------------------------------------------------------
     public void OnPlay()
     {
-      Game.Instance.Ui.SwitchToState(new GameSingleParams());
+      Game.instance.ui.SwitchToState(new GameSingleParams());
     }
 
     //-----------------------------------------------------------------------------------
     public void OnPlayPvp()
     {
-      Game.Instance.Ui.SwitchToState(new WaitingGameParams());
+      Game.instance.ui.SwitchToState(new WaitingGameParams());
     }
 
     //-----------------------------------------------------------------------------------
     public void OnScore()
     {
-      Game.Instance.Ui.SwitchToState(new PlayersScoreParams(1));
+      Game.instance.ui.SwitchToState(new PlayersScoreParams(1));
     }
 
     //-----------------------------------------------------------------------------------

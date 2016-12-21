@@ -25,8 +25,8 @@ namespace GameGUI
       float fSizeX = tf.rect.width/PREVIEW_SIZE;
       float fSizeY = tf.rect.height/PREVIEW_SIZE;
 
-      Logic.Figure fig = glass.NextFigure;
-      var mtx = fig.Matrix;
+      Logic.Figure fig = glass.nextFigure;
+      var mtx = fig.matrix;
       VecInt2 vCenter = fig.GetCenterPoint();
 
       for (int x = 0; x < PREVIEW_SIZE; x++)

@@ -21,7 +21,7 @@ namespace GameGUI
 
       RectTransform tf = GetComponent<RectTransform>();
 
-      var field = m_glass.Field;
+      var field = m_glass.field;
       float fCenterX = m_glass.m_nSizeX/2.0f;
       float fCenterY = m_glass.m_nSizeY/2.0f;
       float fSizeX = tf.rect.width/m_glass.m_nSizeX;
@@ -41,7 +41,7 @@ namespace GameGUI
             btf.anchoredPosition = new Vector3(fSizeX * (x - fCenterX), fSizeY * (y - fCenterY));
             btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fSizeX);
             btf.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fSizeY);
-            if (fieldBlock.m_eType == Logic.Block.EType.COLLAPSING)
+            if (fieldBlock.type == Logic.Block.EType.COLLAPSING)
               block.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
             else
               block.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
@@ -50,7 +50,7 @@ namespace GameGUI
       }
 
       if (m_pointsText)
-        m_pointsText.text = m_glass.Score.ToString();
+        m_pointsText.text = m_glass.score.ToString();
     }
   }
 }

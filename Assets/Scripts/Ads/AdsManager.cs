@@ -14,13 +14,21 @@ namespace Ads
 
   public class AdsManager
   {
+    //Private
+    IAdsProvoder m_adsProvider = null;
+
+    bool  m_bShowOrdered = false;
+    bool  m_bShown = false;
+    int   m_nLastShowGamesCount = 0;
+
+
     //-----------------------------------------------------------------------------------
     public void Init()
     {
       m_bShowOrdered = false;
       m_bShown = false;
       //Consume the ad was shown at the previous launch
-      m_nLastShowGamesCount = Game.Instance.Stats.m_nGamesPlayed;
+      m_nLastShowGamesCount = Game.instance.stats.gamesPlayed;
 
 #if UNITY_ANDROID
       m_adsProvider = new UnityAds();
@@ -39,7 +47,7 @@ namespace Ads
       {
         m_bShown = m_adsProvider.ShowRewardedAd();
         if (m_bShown)
-          m_nLastShowGamesCount = Game.Instance.Stats.m_nGamesPlayed;
+          m_nLastShowGamesCount = Game.instance.stats.gamesPlayed;
       }
     }
 
@@ -55,7 +63,7 @@ namespace Ads
       //Repeat each n games
       const int REPEAT_RATE = 8;
       const int REPEAT_OFFSET = 3;
-      int nCurrGamesCount = Game.Instance.Stats.m_nGamesPlayed;
+      int nCurrGamesCount = Game.instance.stats.gamesPlayed;
       bool bShow = (nCurrGamesCount % REPEAT_RATE == REPEAT_OFFSET) && (nCurrGamesCount != m_nLastShowGamesCount);
       return bShow;
     }
@@ -74,11 +82,5 @@ namespace Ads
       m_bShowOrdered = false;
     }
 
-
-    IAdsProvoder m_adsProvider = null;
-
-    bool  m_bShowOrdered = false;
-    bool  m_bShown = false;
-    int   m_nLastShowGamesCount = 0;
   }
 }

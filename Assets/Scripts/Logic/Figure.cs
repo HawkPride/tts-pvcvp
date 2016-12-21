@@ -6,11 +6,6 @@ namespace Logic
 {
   public class Figure
   {
-    //Static matrices of all figures by type and position
-    static int[,][,] s_arMatrixByTypeNRot;
-
-    EType   m_eType;
-    int     m_nCurRot = 0;
 
     public enum EType
     {
@@ -27,10 +22,11 @@ namespace Logic
     }
 
 
-    public EType  Type { get { return m_eType; } }
-    public int    Rotation { get { return m_nCurRot; } set { m_nCurRot = value; } }
+    public EType    type { get { return m_eType; } }
+    public VecInt2  pos { get { return m_vPos; } set { m_vPos = value; } }
+    public int      rot { get { return m_nCurRot; } set { m_nCurRot = value; } }
 
-    public int[,] Matrix { get { return s_arMatrixByTypeNRot[(int)m_eType, m_nCurRot]; } }
+    public int[,]   matrix { get { return s_arMatrixByTypeNRot[(int)m_eType, m_nCurRot]; } }
 
 
     static Figure()
@@ -57,7 +53,7 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     public VecInt2 GetCenterPoint()
     {
-      var curMtx = Matrix;
+      var curMtx = matrix;
       return new VecInt2(curMtx.GetLength(0) / 2, curMtx.GetLength(1) / 2);
     }
 
@@ -145,5 +141,13 @@ namespace Logic
 
       }
     }
+
+    //Static matrices of all figures by type and position
+    static int[,][,] s_arMatrixByTypeNRot;
+
+    EType   m_eType;
+    VecInt2 m_vPos = new VecInt2(0, 0);
+    int     m_nCurRot = 0;
+
   }
 }

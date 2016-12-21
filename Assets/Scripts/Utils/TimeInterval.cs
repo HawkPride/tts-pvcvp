@@ -35,7 +35,7 @@ public class TimeInterval
     return fPassed > m_fInterval;
   }
 
-  public float Interval { set { m_fInterval = value; } get { return m_fInterval; } }
+  public float interval { set { m_fInterval = value; } get { return m_fInterval; } }
 
   float m_fStartTime;
   float m_fInterval = 0.1f;

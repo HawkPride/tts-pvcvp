@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
 
 public class InputProvider : MonoBehaviour
@@ -18,55 +17,60 @@ public class InputProvider : MonoBehaviour
   int           m_nCurrInputFlags = 0;
   int           m_nCurrButtonFlags = 0;
   TimeInterval  m_timer;
+  bool          m_bLocal = true;
 
-
+  public delegate void OnNewInputState(int nStateFlags);
   public delegate void OnInputEvent(int nKey, bool bDown);
-  public OnInputEvent m_delEvent;
+  public OnNewInputState  m_delNewInputState;
+  public OnInputEvent     m_delEvent;
 
-  public float        m_fInputRepeat    = 0.1f;
+  public float            m_fInputRepeat  = 0.1f;
 
-  //Buttons
-  public EventTrigger   m_btnUp     = null;
-  public EventTrigger   m_btnDown   = null;
-  public EventTrigger   m_btnLeft   = null;
-  public EventTrigger   m_btnRight  = null;
+  public bool local { set { m_bLocal = value; } }
 
   // Use this for initialization
   //-----------------------------------------------------------------------------------
-  public void Start()
+  void Start()
   {
     m_timer = new TimeInterval(m_fInputRepeat);
 
-    //Add callbacks to button
-    RegisterButton(m_btnUp, EInputAction.ROTATE);
-    RegisterButton(m_btnDown, EInputAction.DOWN);
-    RegisterButton(m_btnLeft, EInputAction.LEFT);
-    RegisterButton(m_btnRight, EInputAction.RIGHT);
+    if (m_bLocal)
+    {
+      GameGUI.UiButtonsToInputProvider translator = FindObjectOfType<GameGUI.UiButtonsToInputProvider>();
+      if (translator != null)
+        translator.LinkToIp(this);
+    }
   }
 
   // Update is called once per frame
   //-----------------------------------------------------------------------------------
-  public void Update()
+  void Update()
   {
-    float fX = Input.GetAxis("Horizontal");
-    float fY = Input.GetAxis("Vertical");
     int nInputFlags = 0;
-    if (fX < 0.0)
-      nInputFlags |= (int)EInputAction.LEFT;
-    else if (fX > 0.0)
-      nInputFlags |= (int)EInputAction.RIGHT;
-    if (fY < 0.0)
-      nInputFlags |= (int)EInputAction.DOWN;
-    else if (fY > 0.0)
-      nInputFlags |= (int)EInputAction.ROTATE;
+    if (m_bLocal)
+    {
+      float fX = Input.GetAxis("Horizontal");
+      float fY = Input.GetAxis("Vertical");
+
+      if (fX < 0.0)
+        nInputFlags |= (int)EInputAction.LEFT;
+      else if (fX > 0.0)
+        nInputFlags |= (int)EInputAction.RIGHT;
+      if (fY < 0.0)
+        nInputFlags |= (int)EInputAction.DOWN;
+      else if (fY > 0.0)
+        nInputFlags |= (int)EInputAction.ROTATE;
+    }
 
     nInputFlags |= m_nCurrButtonFlags;
 
     if (m_nCurrInputFlags != nInputFlags)
+    {
+      if (m_delNewInputState != null)
+        m_delNewInputState(nInputFlags);
       m_timer.Reset();
-
+    }
     bool bRepeatOk = m_timer.StartNewInterval();
-
 
     for (int nKey = 1; nKey < (int)EInputAction.LAST; nKey = nKey << 1)
     {
@@ -79,7 +83,7 @@ public class InputProvider : MonoBehaviour
         m_delEvent(nKey, bNewState);
       }
       //Send repeat
-      else if (bCurState && bRepeatOk 
+      else if (bCurState && bRepeatOk
         && nKey != (int)EInputAction.ROTATE)
       {
         m_delEvent(nKey, true);
@@ -87,6 +91,13 @@ public class InputProvider : MonoBehaviour
     }
 
     m_nCurrInputFlags = nInputFlags;
+  }
+  
+
+  //-----------------------------------------------------------------------------------
+  public void ForceSetFlags(int nFlags)
+  {
+    m_nCurrButtonFlags = nFlags;
   }
 
   //-----------------------------------------------------------------------------------
@@ -112,18 +123,4 @@ public class InputProvider : MonoBehaviour
   }
 
 
-  //-----------------------------------------------------------------------------------
-  void RegisterButton(EventTrigger btn, EInputAction eFlag)
-  {
-    if (btn == null)
-      return;
-    EventTrigger.Entry down = new EventTrigger.Entry();
-    down.eventID = EventTriggerType.PointerDown;
-    down.callback.AddListener((eventData) => { OnInputUiButtonDown((int)eFlag); });
-    btn.triggers.Add(down);
-    EventTrigger.Entry up = new EventTrigger.Entry();
-    up.eventID = EventTriggerType.PointerUp;
-    up.callback.AddListener((eventData) => { OnInputUiButtonUp((int)eFlag); });
-    btn.triggers.Add(up);
-  }
 }

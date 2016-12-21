@@ -10,7 +10,7 @@ public abstract class StatsProviderBase
     public int     m_nScore;
   };
 
-  public int m_nGamesPlayed = 0;
+  public int gamesPlayed { get; set; }
 
   public abstract List<Stats> GetCurStats     (int nStartIndex, int nCount);
 
