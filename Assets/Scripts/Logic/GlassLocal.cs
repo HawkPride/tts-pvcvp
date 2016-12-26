@@ -13,10 +13,12 @@ namespace Logic
 
     //Events
     public delegate void GlassEvent();
+    public delegate void OnLineAdded(bool[] arBusy);
 
     public GlassEvent   m_delNewFigure;
     public GlassEvent   m_delChangePos;
     public GlassEvent   m_delFigurePlaced;
+    public OnLineAdded  m_delLineAdded;
 
     //-----------------------------------------------------------------------------------
     public GlassLocal()
@@ -29,6 +31,15 @@ namespace Logic
       base.Init();
 
       CreateNextFigure();
+    }
+
+    //-----------------------------------------------------------------------------------
+    public override void AddOneLine(bool[] arBusy)
+    {
+      base.AddOneLine(arBusy);
+
+      if (m_delLineAdded != null)
+        m_delLineAdded(arBusy);
     }
 
     //-----------------------------------------------------------------------------------
@@ -56,9 +67,7 @@ namespace Logic
         }
         else
         {
-          m_bEnd = true;
-          if (m_delGameEnd != null)
-            m_delGameEnd();
+          GameEnd();
           return;
         }
       }

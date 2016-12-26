@@ -65,11 +65,39 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
+
+      PhotonNetwork.Disconnect();
+    }
+
+    //-----------------------------------------------------------------------------------
+    void OnOpponentRowDeleted(int nCount)
+    {
+      int nSize = m_localPlayer.glass.m_nSizeX;
+      bool[] arBusy = new bool[nSize];
+
+      for (int i = 0; i < nCount; i++)
+      {
+        bool bHasEmpty = false;
+        for (int x = 0; x < nSize; x++)
+        {
+          arBusy[x] = (UnityEngine.Random.value < 0.8f);
+          if (!arBusy[x])
+            bHasEmpty = true;
+        }
+        if (!bHasEmpty)
+          arBusy[0] = false;
+        m_localPlayer.glass.AddOneLine(arBusy);
+      }
     }
 
     //-----------------------------------------------------------------------------------
     void OnGameEnd(bool bOther)
     {
+      if (bOther)
+        GameMessage.Create(GetCanvas(), "You Won!", OnGameOver, 3.0f);
+      else
+        GameMessage.Create(GetCanvas(), "You Lost!", OnGameOver, 3.0f);
+
       /*StatsProviderBase sp = Game.Instance.Stats;
       sp.m_nGamesPlayed++;
       //New score is not in hi score
@@ -92,8 +120,8 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     void OnGameOver()
     {
-      /*Game.Instance.Stats.Save();
-      Game.Instance.Ui.SwitchToState(new MainMenuParams());*/
+      /*Game.Instance.Stats.Save();*/
+      Game.instance.ui.SwitchToState(new MainMenuParams());
     }
 
     //-----------------------------------------------------------------------------------
@@ -112,6 +140,7 @@ namespace GameGUI.States
         {
           m_otherPlayer = it;
           m_otherPlayer.glass.m_delGameEnd += (() => { OnGameEnd(true); });
+          m_otherPlayer.glass.m_delRowDeleted += OnOpponentRowDeleted;
           if (m_glassOpponentRend != null)
             m_glassOpponentRend.m_glass = m_otherPlayer.glass;
 

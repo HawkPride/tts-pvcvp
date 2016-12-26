@@ -16,6 +16,8 @@ namespace Net
         glass.m_delNewFigure += OnGlassNewFigure;
         glass.m_delChangePos += OnGlassChangePos;
         glass.m_delFigurePlaced += OnGlassFigurePlaced;
+        glass.m_delLineAdded += OnGlassLineAdded;
+        glass.m_delGameEnd += OnGlassGameEnd;
         m_glass = glass;
       }
       else
@@ -98,6 +100,28 @@ namespace Net
       remote.SetPos(pos, true);
     }
 
+    //-----------------------------------------------------------------------------------
+    void OnGlassLineAdded(bool[] arBusy)
+    {
+      photonView.RPC("RpcLineAdded", PhotonTargets.Others, arBusy);
+    }
+    [PunRPC]
+    void RpcLineAdded(bool[] arBusy)
+    {
+      m_glass.AddOneLine(arBusy);
+    }
+
+    //-----------------------------------------------------------------------------------
+    void OnGlassGameEnd()
+    {
+      photonView.RPC("RpcGameEnd", PhotonTargets.Others);
+    }
+    [PunRPC]
+    void RpcGameEnd()
+    {
+      Logic.GlassRemote remote = (Logic.GlassRemote)m_glass;
+      remote.GameEnd();
+    }
 
     //-----------------------------------------------------------------------------------
     void OnInputNewState(int nStateFlags)

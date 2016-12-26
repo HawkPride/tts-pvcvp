@@ -79,7 +79,39 @@ namespace Logic
     }
 
     //-----------------------------------------------------------------------------------
+    public virtual void AddOneLine(bool[] arBusy)
+    {
+      Debug.Assert(arBusy.Length == m_nSizeX);
+      //Lift the field one cell up
+      if (m_curFigure != null)
+        m_curFigure.pos.y += 1;
+
+      for (int x = 0; x < m_nSizeX; x++)
+      {
+        for (int y = m_nSizeY - 1; y > 0; y--)
+        {
+          m_arField[x, y] = m_arField[x, y - 1];
+        }
+
+        if (arBusy[x])
+          m_arField[x, 0] = new Block();
+        else
+          m_arField[x, 0] = null;
+      }
+    }
+
+    //-----------------------------------------------------------------------------------
+    public virtual void GameEnd()
+    {
+      m_bEnd = true;
+      if (m_delGameEnd != null)
+        m_delGameEnd();
+    }
+
+    //-----------------------------------------------------------------------------------
     protected abstract void ProcessOneStep();
+
+
 
 
 

@@ -211,8 +211,8 @@ namespace Net
           break;
         }
         opts.IsOpen = true;
-        opts.PlayerTtl = 1000;
-        opts.EmptyRoomTtl = 1000;
+        opts.PlayerTtl = 100;
+        opts.EmptyRoomTtl = 100;
 
         PhotonNetwork.CreateRoom(null, opts, null);
       }
