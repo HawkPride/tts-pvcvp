@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
+#if UNITY_ADS
 using UnityEngine.Advertisements;
 
 namespace Ads
 {
-#if UNITY_ANDROID
   public class UnityAds : IAdsProvoder
   {
     ShowCallback m_callback;
@@ -60,5 +60,6 @@ namespace Ads
       m_callback(res);
     }
   }
-#endif
+
 }
+#endif
