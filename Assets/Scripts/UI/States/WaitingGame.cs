@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using Net;
 
@@ -15,6 +16,8 @@ namespace GameGUI.States
 
   public class WaitingGame : GameState
   {
+
+    public Text m_textPlayersCount;
 
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
@@ -36,19 +39,34 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public override void OnUpdate()
     {
+      const int MAX_COUNT = 2;
+      int nCurrCount = 0;
       Room room = PhotonNetwork.room;
-      if (room != null && room.playerCount == 2)
+      if (room != null)
       {
-        PhotonNetwork.isMessageQueueRunning = false;
-        Game.instance.ui.SwitchToState(new GamePvp1x1Params());
+        nCurrCount = room.playerCount;
+         if (room.playerCount == MAX_COUNT)
+        {
+          PhotonNetwork.isMessageQueueRunning = false;
+          Game.instance.ui.SwitchToState(new GamePvp1x1Params());
+        }
       }
 
+      m_textPlayersCount.text = nCurrCount.ToString() + "/" + MAX_COUNT.ToString();
     }
 
     //-----------------------------------------------------------------------------------
     public override void OnEnd()
     {
       Unsubscribe();
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void OnCancel()
+    {
+      Game.instance.netMan.ExitMatch();
+      Unsubscribe();
+      Game.instance.ui.SwitchToState(new MainMenuParams());
     }
 
     //-----------------------------------------------------------------------------------

@@ -74,18 +74,23 @@ namespace GameGUI.States
     {
       int nSize = m_localPlayer.glass.m_nSizeX;
       bool[] arBusy = new bool[nSize];
+      int nEmptyCount = (int)(nSize * 0.2f);
 
       for (int i = 0; i < nCount; i++)
       {
-        bool bHasEmpty = false;
         for (int x = 0; x < nSize; x++)
+          arBusy[x] = true;
+
+        int nEmptyAdded = 0;
+        while (nEmptyAdded < nEmptyCount)
         {
-          arBusy[x] = (UnityEngine.Random.value < 0.8f);
-          if (!arBusy[x])
-            bHasEmpty = true;
+          int nPlace = UnityEngine.Random.Range(0, nSize - 1);
+          if (arBusy[nPlace])
+          {
+            arBusy[nPlace] = false;
+            nEmptyAdded++;
+          }
         }
-        if (!bHasEmpty)
-          arBusy[0] = false;
         m_localPlayer.glass.AddOneLine(arBusy);
       }
     }

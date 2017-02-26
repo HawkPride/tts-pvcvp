@@ -11,7 +11,14 @@ public class StatsProviderLocal
   //Private
   const int MAX_STORED_RECORDS = 10;
 
+  Config        m_config = new Config();
   List<Stats>   m_arCurrRecords = new List<Stats>();
+
+  //-----------------------------------------------------------------------------------
+  public override Config GetConfig()
+  {
+    return m_config;
+  }
 
   //-----------------------------------------------------------------------------------
   public override List<Stats> GetCurStats(int nStartIndex, int nCount)
@@ -60,7 +67,7 @@ public class StatsProviderLocal
     FileStream fs = File.Open(strFile, FileMode.OpenOrCreate);
     BinaryFormatter bf = new BinaryFormatter();
     bf.Serialize(fs, m_arCurrRecords);
-    bf.Serialize(fs, gamesPlayed);
+    bf.Serialize(fs, m_config);
     fs.Close();
     return true;
   }
@@ -76,12 +83,12 @@ public class StatsProviderLocal
     try
     {
       m_arCurrRecords = (List<Stats>)bf.Deserialize(fs);
-      gamesPlayed = (int)bf.Deserialize(fs);
+      m_config = (Config)bf.Deserialize(fs);
     }
     catch (SerializationException)
     {
       m_arCurrRecords = new List<Stats>();
-      gamesPlayed = 0;
+      m_config = new Config();
     }
     fs.Close();
 

@@ -87,6 +87,21 @@ namespace Net
     }
 
     //-----------------------------------------------------------------------------------
+    public void ExitMatch()
+    {
+      if (m_eCurGameType == EGameType.UNDEFINED)
+        return;
+      if (PhotonNetwork.insideLobby)
+        PhotonNetwork.LeaveLobby();
+      else if (PhotonNetwork.room != null)
+      {
+        PhotonNetwork.LeaveRoom();
+      }
+      m_eCurGameType = EGameType.UNDEFINED;
+      Disconnect();
+    }
+
+    //-----------------------------------------------------------------------------------
     void SuccesfullyEnteredRoom()
     {
       if (m_delEnterMatch != null)

@@ -70,7 +70,7 @@ namespace GameGUI.States
     public void OnGameEnd()
     {
       StatsProviderBase sp = Game.instance.stats;
-      sp.gamesPlayed++;
+      sp.GetConfig().m_nGamesPlayed++;
       //New score is not in hi score
       if (sp.GetNewScoreIndex(m_player.glass.score) < 0 || m_player.glass.score == 0)
         GameMessage.Create(GetCanvas(), "Game Over", OnGameOver, 1.5f);
