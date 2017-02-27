@@ -129,6 +129,31 @@ namespace GameGUI.States
       Game.instance.ui.SwitchToState(new MainMenuParams());
     }
 
+
+    //-----------------------------------------------------------------------------------
+    public void OnExitMatch()
+    {
+      MessageBox.Create(GetCanvas(), "Exit Match?", MessageBox.EType.YES_NO,
+        () => { OnExitMatch(true); },
+        () => { OnExitMatch(false); });
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void OnExitMatch(bool bRes)
+    {
+      /*if (bRes)
+      {
+        StatsProviderBase sp = Game.instance.stats;
+        sp.GetConfig().m_nGamesPlayed++;
+        sp.Save();
+        Game.instance.ui.SwitchToState(new MainMenuParams());
+      }
+      else
+      {
+        m_player.glass.Pause(false);
+      }*/
+    }
+
     //-----------------------------------------------------------------------------------
     void UpdateOtherPlayer()
     {

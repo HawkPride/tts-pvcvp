@@ -21,6 +21,7 @@ namespace GameGUI.States
     public BlockRendererGlass   m_glassRend;
     public BlockRendererPreview m_glassPrev;
     public Net.PlayerGlass      m_player;
+    
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -93,6 +94,33 @@ namespace GameGUI.States
     {
       Game.instance.stats.Save();
       Game.instance.ui.SwitchToState(new MainMenuParams());
+    }
+
+
+    //-----------------------------------------------------------------------------------
+    public void OnExitMatch()
+    {
+      m_player.glass.Pause(true);
+
+      MessageBox.Create(GetCanvas(), "Exit Match?", MessageBox.EType.YES_NO, 
+        () => { OnExitMatch(true); }, 
+        () => { OnExitMatch(false); });
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void OnExitMatch(bool bRes)
+    {
+      if (bRes)
+      {
+        StatsProviderBase sp = Game.instance.stats;
+        sp.GetConfig().m_nGamesPlayed++;
+        sp.Save();
+        Game.instance.ui.SwitchToState(new MainMenuParams());
+      }
+      else
+      {
+        m_player.glass.Pause(false);
+      }
     }
   }
 }

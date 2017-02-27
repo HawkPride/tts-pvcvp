@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 842ac212e91a6e649ad7ca37387efa51
-timeCreated: 1488134163
+timeCreated: 1488221142
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -15,6 +15,7 @@ TextureImporter:
     21300016: Galss_Border
     21300018: Block
     21300020: Arrow_Rotate
+    21300022: Button_Exit
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -234,6 +235,19 @@ TextureImporter:
         y: 176
         width: 48
         height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button_Exit
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 208
+        width: 44
+        height: 40
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

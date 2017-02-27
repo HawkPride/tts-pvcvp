@@ -12,7 +12,7 @@ namespace Logic
     //Protected
     protected Block[,]      m_arField;
     protected Figure        m_curFigure;
-    protected bool          m_bEnd;
+    protected bool          m_bPaused;
     protected TimeInterval  m_stepTimer;
     protected int           m_nCurrPoints = 0;
     protected int           m_nTotalRawsDone = 0;
@@ -51,7 +51,7 @@ namespace Logic
       m_nCurrPoints = 0;
       m_arField = new Block[m_nSizeX, m_nSizeY];
       m_stepTimer = new TimeInterval(m_fStartStep);
-      m_bEnd = false;
+      m_bPaused = false;
 
       /*
       //TODO: Test
@@ -69,7 +69,7 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     public virtual void Update()
     {
-      if (m_bEnd)
+      if (m_bPaused)
         return;
 
       if (!m_stepTimer.StartNewInterval())
@@ -103,9 +103,17 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     public virtual void GameEnd()
     {
-      m_bEnd = true;
+      m_bPaused = true;
       if (m_delGameEnd != null)
         m_delGameEnd();
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void Pause(bool bPause)
+    {
+      m_bPaused = bPause;
+      if (!m_bPaused)
+        m_stepTimer.Reset();
     }
 
     //-----------------------------------------------------------------------------------
@@ -120,7 +128,7 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     public void ProcessInput(int nKey, bool bDown)
     {
-      if (m_bEnd)
+      if (m_bPaused)
         return;
       if (m_curFigure == null)
         return;
