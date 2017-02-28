@@ -151,6 +151,7 @@
     <Compile Include="Assets\Scripts\UI\States\GameSingle.cs" />
     <Compile Include="Assets\Scripts\UI\States\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\States\PlayersScore.cs" />
+    <Compile Include="Assets\Scripts\UI\States\Settings.cs" />
     <Compile Include="Assets\Scripts\UI\States\WaitingGame.cs" />
     <Compile Include="Assets\Scripts\UI\UiButtonsToInputProvider.cs" />
     <Compile Include="Assets\Scripts\UI\UiPlatformSwitcher.cs" />

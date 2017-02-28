@@ -62,7 +62,7 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public void OnSettings()
     {
-      MessageBox.Create(GetCanvas(), "Hello world", MessageBox.EType.OK, OnTest);
+      Game.instance.ui.SwitchToState(new SettingsParams());
     }
 
     //-----------------------------------------------------------------------------------

@@ -101,6 +101,10 @@ public class StatsProviderLocal
   //-----------------------------------------------------------------------------------
   string GetFileName()
   {
-    return Application.persistentDataPath + "/stats.dat";
+    string strFileName = "/stats.dat";
+#if UNITY_STANDALONE_WIN
+    strFileName = "/stats_win.dat";
+#endif
+    return Application.persistentDataPath + strFileName;
   }
 }

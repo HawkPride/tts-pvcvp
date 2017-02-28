@@ -36,7 +36,7 @@ namespace GameGUI
     //-----------------------------------------------------------------------------------
     public void SetAsInput(StatsProviderBase.Stats defStats)
     {
-      ((RectTransform)m_input.textComponent.transform).pivot = new Vector2(0, 1.2f);
+      //((RectTransform)m_input.textComponent.transform).pivot = new Vector2(0, 1.2f);
       m_input.text = defStats.m_strPlayerName;
       m_score.text = defStats.m_nScore.ToString();
       m_name.gameObject.SetActive(false);

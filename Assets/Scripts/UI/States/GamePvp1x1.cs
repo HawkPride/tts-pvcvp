@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.UI;
 
 namespace GameGUI.States
 {
@@ -22,8 +23,10 @@ namespace GameGUI.States
 
     public BlockRendererGlass   m_glassOpponentRend;
 
-    public Net.PlayerGlass      m_localPlayer;
-    public Net.PlayerGlass      m_otherPlayer;
+    public Text                 m_enemyName;
+
+    Net.PlayerGlass      m_localPlayer;
+    Net.PlayerGlass      m_otherPlayer;
     //-----------------------------------------------------------------------------------
     public override EGameStateType GetStateType()
     {
@@ -174,6 +177,9 @@ namespace GameGUI.States
           if (m_glassOpponentRend != null)
             m_glassOpponentRend.m_glass = m_otherPlayer.glass;
 
+
+          //Update name
+          m_enemyName.text = it.photonView.owner.name;
           return;
         }
 

@@ -50,11 +50,14 @@ namespace Net
     //-----------------------------------------------------------------------------------
     public bool Connect()
     {
+      Game game = Game.instance;
+      PhotonNetwork.playerName = game.stats.GetConfig().m_strPlayerName;
+
       m_eCurGameType = EGameType.UNDEFINED;
       //Already connected
       if (PhotonNetwork.connected)
         return true;
-      return PhotonNetwork.ConnectUsingSettings(Game.instance.config().gameVersion);
+      return PhotonNetwork.ConnectUsingSettings(game.config().gameVersion);
     }
 
     //-----------------------------------------------------------------------------------

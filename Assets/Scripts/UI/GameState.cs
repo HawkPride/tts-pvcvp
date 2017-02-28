@@ -10,6 +10,7 @@ namespace GameGUI.States
     GAME_PVP_1x1,
     PLAYER_SCORE,
     WAITING_GAME,
+    SETTINGS,
   }
 
   //Creation params

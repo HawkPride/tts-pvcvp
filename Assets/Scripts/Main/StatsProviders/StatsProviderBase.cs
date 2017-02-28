@@ -13,7 +13,7 @@ public abstract class StatsProviderBase
   [Serializable]
   public class Config
   {
-    public string m_strPlayerName;
+    public string m_strPlayerName = System.String.Empty;
     public int    m_nGamesPlayed  = 0;
     public int    m_nPvpRating    = 0;
   }

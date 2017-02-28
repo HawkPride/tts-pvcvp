@@ -38,6 +38,13 @@ public class Game
     m_stats = new StatsProviderLocal();
     m_stats.Load();
 
+
+    if (m_stats.GetConfig().m_strPlayerName.Length == 0)
+    {
+      m_stats.GetConfig().m_strPlayerName = "Player_" + UnityEngine.Random.Range(1000, 9000000).ToString();
+      m_stats.Save();
+    }
+
     m_adsMan = new Ads.AdsManager();
     m_adsMan.Init();
 
