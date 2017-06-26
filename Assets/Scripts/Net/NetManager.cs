@@ -80,9 +80,10 @@ namespace Net
       Debug.Assert(m_eCurGameType == EGameType.UNDEFINED);
       if (PhotonNetwork.connectionStateDetailed != ClientState.ConnectedToMaster)
       {
-        Debug.Log("EnterMatch: the game is not connected to master");
+        Debug.LogError("EnterMatch: the game is not connected to master");
         return false;
       }
+      Debug.Log("EnterMatch: connected to " + PhotonNetwork.ServerAddress);
       m_eCurGameType = eType;
 
       TypedLobby lobby = new TypedLobby(eType.ToString(), LobbyType.AsyncRandomLobby);
@@ -156,8 +157,8 @@ namespace Net
 
     public void OnJoinedLobby()
     {
-      Hashtable roomProps = new Hashtable();
-      PhotonNetwork.JoinRandomRoom(roomProps, 0);
+      //Hashtable roomProps = new Hashtable();
+      PhotonNetwork.JoinRandomRoom(null, 0);
     }
 
     public void OnLeftLobby()

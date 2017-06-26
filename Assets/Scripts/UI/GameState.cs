@@ -19,10 +19,14 @@ namespace GameGUI.States
     public abstract string          GetSceneName();
     public abstract EGameStateType  GetStateType();
   }
-
-  public abstract class GameState : MonoBehaviour
+  
+  public abstract class GameState
+    : MonoBehaviour
   {
+    public abstract void            SetParams(GameStateParams stateParams);
+
     public abstract EGameStateType  GetStateType();
+
     public abstract void            OnStart();
     public abstract void            OnUpdate();
     public abstract void            OnEnd();
@@ -39,7 +43,11 @@ namespace GameGUI.States
         if (m_rootCanvas != null)
           break;
       }
+
+      Game.instance.ui.OnSwithcedToState(this);
+
       OnStart();
+
     }
 
     // Update is called once per frame
@@ -53,6 +61,7 @@ namespace GameGUI.States
     void OnDestroy()
     {
       OnEnd();
+      Game.instance.ui.OnStateEnd(this);
     }
   
     //-----------------------------------------------------------------------------------
@@ -67,10 +76,11 @@ namespace GameGUI.States
       return m_rootCanvas;
     }
 
+    //-----------------------------------------------------------------------------------
+    
     //Members
     //-----------------------------------------------------------------------------------
     Canvas          m_rootCanvas = null;
-    GameStateParams m_creationParams = null;
   }
 
 

@@ -12,10 +12,8 @@ namespace Logic
     public Figure nextFigure { get { return m_nextFigure; } }
 
     //Events
-    public delegate void GlassEvent();
     public delegate void OnLineAdded(bool[] arBusy);
-
-    public GlassEvent   m_delNewFigure;
+    
     public GlassEvent   m_delChangePos;
     public GlassEvent   m_delFigurePlaced;
     public OnLineAdded  m_delLineAdded;
@@ -45,25 +43,19 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     protected override void ProcessOneStep()
     {
-      if (m_curFigure != null)
+      if (figure != null)
       {
         DrawCurrentFigure(false);
       }
       else
       {
-        //Assert.IsNotNull(m_nextFigure);
-        m_curFigure = m_nextFigure;
         //1 for x cause it would be subtracted next lines
         VecInt2 vNextPos = new VecInt2(m_nSizeX/2, m_nSizeY);
 
         //Check round end
-        if (CheckFigurePos(vNextPos))
+        if (SetNewFigure(m_nextFigure, vNextPos, m_nextFigure.rot))
         {
           CreateNextFigure();
-          m_curFigure.pos = vNextPos;
-
-          if (m_delNewFigure != null)
-            m_delNewFigure();
         }
         else
         {
@@ -72,11 +64,11 @@ namespace Logic
         }
       }
 
-      VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x, m_curFigure.pos.y - 1);
+      VecInt2 vNewPos = new VecInt2(figure.pos.x, figure.pos.y - 1);
       bool bStillGo = CheckFigurePos(vNewPos);
       if (bStillGo)
       {
-        m_curFigure.pos = vNewPos;
+        figure.pos = vNewPos;
         if (m_delChangePos != null)
           m_delChangePos();
       }
@@ -87,7 +79,7 @@ namespace Logic
       {
         if (m_delFigurePlaced != null)
           m_delFigurePlaced();
-        m_curFigure = null;
+        SetNewFigure(null, null, 0);
         if (FindFullLines())
           CollapseLines();
       }
@@ -108,15 +100,15 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     public void OnInputEvent(int nKey, bool bDown)
     {
-      if (m_curFigure == null)
+      if (figure == null)
         return;
-      VecInt2 vOldPos = new VecInt2(m_curFigure.pos);
-      int nOldRot = m_curFigure != null ? m_curFigure.rot : 0;
+      VecInt2 vOldPos = new VecInt2(figure.pos);
+      int nOldRot = figure != null ? figure.rot : 0;
 
       ProcessInput(nKey, bDown);
 
-      int nRot = m_curFigure != null ? m_curFigure.rot : 0;
-      if (vOldPos != m_curFigure.pos || nOldRot != nRot)
+      int nRot = figure != null ? figure.rot : 0;
+      if (vOldPos != figure.pos || nOldRot != nRot)
         if (m_delChangePos != null)
           m_delChangePos();
     }

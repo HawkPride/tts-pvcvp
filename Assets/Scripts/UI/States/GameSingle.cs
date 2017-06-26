@@ -15,18 +15,12 @@ namespace GameGUI.States
 
 
 
-  public class GameSingle : GameState
+  public class GameSingle : GameStateImplTpl<GameSingleParams>
   {
 
     public BlockRendererGlass   m_glassRend;
     public BlockRendererPreview m_glassPrev;
     public Net.PlayerGlass      m_player;
-    
-    //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.GAME_SINGLE;
-    }
 
     //-----------------------------------------------------------------------------------
     public override void OnStart()
@@ -86,7 +80,7 @@ namespace GameGUI.States
       GameResults res = new GameResults();
       res.score = m_player.glass.score;
       Game.instance.results = res;
-      Game.instance.ui.SwitchToState(new PlayersScoreParams(m_player.glass.score));
+      Game.instance.ui.SwitchToState(new PlayersScoreParams(/*m_player.glass.score*/));
     }
 
     //-----------------------------------------------------------------------------------

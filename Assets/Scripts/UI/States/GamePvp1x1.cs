@@ -9,14 +9,26 @@ namespace GameGUI.States
   //Creation params
   public class GamePvp1x1Params : GameStateParams
   {
+    public GamePvp1x1Params()
+      : this(false)
+    {
+    }
+
+    public GamePvp1x1Params(bool bAiMode)
+    {
+      m_bAiMode = bAiMode;
+    }
+
     public override string          GetSceneName() { return "GamePvp1x1"; }
     public override EGameStateType  GetStateType() { return EGameStateType.GAME_PVP_1x1; }
+
+    public bool m_bAiMode;
   }
 
 
 
 
-  public class GamePvp1x1 : GameState
+  public class GamePvp1x1 : GameStateImplTpl<GamePvp1x1Params>
   {
     public BlockRendererGlass   m_glassRend;
     public BlockRendererPreview m_glassPrev;
@@ -27,11 +39,6 @@ namespace GameGUI.States
 
     Net.PlayerGlass      m_localPlayer;
     Net.PlayerGlass      m_otherPlayer;
-    //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.GAME_PVP_1x1;
-    }
 
     //-----------------------------------------------------------------------------------
     public override void OnStart()

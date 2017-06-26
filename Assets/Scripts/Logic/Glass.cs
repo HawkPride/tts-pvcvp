@@ -9,13 +9,13 @@ namespace Logic
 {
   public abstract class Glass
   {
-    //Protected
-    protected Block[,]      m_arField;
-    protected Figure        m_curFigure;
-    protected bool          m_bPaused;
-    protected TimeInterval  m_stepTimer;
-    protected int           m_nCurrPoints = 0;
-    protected int           m_nTotalRawsDone = 0;
+    //Private
+    private Figure        m_curFigure;
+    private Block[,]      m_arField;
+    private bool          m_bPaused;
+    private TimeInterval  m_stepTimer;
+    private int           m_nCurrPoints = 0;
+    private int           m_nTotalRawsDone = 0;
 
     //Public
 
@@ -36,10 +36,11 @@ namespace Logic
     }
 
     //Events
-    public delegate void OnGameEnd();
+    public delegate void GlassEvent();
     public delegate void OnRowDeleted(int nCount);
 
-    public OnGameEnd      m_delGameEnd;
+    public GlassEvent     m_delNewFigure;
+    public GlassEvent     m_delGameEnd;
     public OnRowDeleted   m_delRowDeleted;
 
     //Unity Events
@@ -99,6 +100,7 @@ namespace Logic
           m_arField[x, 0] = null;
       }
     }
+
 
     //-----------------------------------------------------------------------------------
     public virtual void GameEnd()
@@ -189,7 +191,20 @@ namespace Logic
       frameTime = m_fStartStep * Mathf.Pow(m_fDifficultyMult, nDiff);
     }
 
-
+    //-----------------------------------------------------------------------------------
+    protected bool SetNewFigure(Figure figure, VecInt2 vNewPos, int nRot)
+    {
+      m_curFigure = figure;
+      if (m_curFigure != null && CheckFigurePos(vNewPos))
+      {
+        m_curFigure.pos = vNewPos;
+        m_curFigure.rot = nRot;
+        if (m_delNewFigure != null)
+          m_delNewFigure();
+        return true;
+      }
+      return false;
+    }
 
     //-----------------------------------------------------------------------------------
     protected void DrawCurrentFigure(bool bDraw)

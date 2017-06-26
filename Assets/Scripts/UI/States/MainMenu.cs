@@ -12,14 +12,8 @@ namespace GameGUI.States
 
 
 
-  public class MainMenu : GameState
+  public class MainMenu : GameStateImplTpl<MainMenuParams>
   {
-    //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.MAIN_MENU;
-    }
-
     //-----------------------------------------------------------------------------------
     public override void OnStart()
     {
@@ -50,13 +44,13 @@ namespace GameGUI.States
     //-----------------------------------------------------------------------------------
     public void OnPlayPvp()
     {
-      Game.instance.ui.SwitchToState(new WaitingGameParams());
+      Game.instance.ui.SwitchToState(new WaitingGameParams(Net.EGameType.PvP1x1));
     }
 
     //-----------------------------------------------------------------------------------
     public void OnScore()
     {
-      Game.instance.ui.SwitchToState(new PlayersScoreParams(1));
+      Game.instance.ui.SwitchToState(new PlayersScoreParams());
     }
 
     //-----------------------------------------------------------------------------------

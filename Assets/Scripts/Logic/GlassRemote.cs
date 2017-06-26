@@ -11,11 +11,11 @@ namespace Logic
     protected override void ProcessOneStep()
     {
       DrawCurrentFigure(false);
-      if (m_curFigure != null)
+      if (figure != null)
       {
-        VecInt2 vNewPos = new VecInt2(m_curFigure.pos.x, m_curFigure.pos.y - 1);
+        VecInt2 vNewPos = new VecInt2(figure.pos.x, figure.pos.y - 1);
         if (CheckFigurePos(vNewPos))
-          m_curFigure.pos = vNewPos;
+          figure.pos = vNewPos;
         //Wait for end step from remote client
       }
       //Draw anyway
@@ -26,8 +26,7 @@ namespace Logic
     public void NewFigure(Figure.EType eType, Net.PosRot curFigurePos)
     {
       DrawCurrentFigure(false);
-      m_curFigure = new Figure(eType);
-      SetPos(ref curFigurePos);
+      SetNewFigure(new Figure(eType), new VecInt2(curFigurePos.x, curFigurePos.y), curFigurePos.r);
       DrawCurrentFigure(true);
     }
 
@@ -39,7 +38,7 @@ namespace Logic
       DrawCurrentFigure(true);
       if (bFinal)
       {
-        m_curFigure = null;
+        SetNewFigure(null, null, 0);
         if (FindFullLines())
           CollapseLines();
       }
@@ -48,11 +47,11 @@ namespace Logic
     //-----------------------------------------------------------------------------------
     void SetPos(ref Net.PosRot curFigurePos)
     {
-      if (m_curFigure != null)
+      if (figure != null)
       {
-        m_curFigure.pos.x = curFigurePos.x;
-        m_curFigure.pos.y = curFigurePos.y;
-        m_curFigure.rot   = curFigurePos.r;
+        figure.pos.x = curFigurePos.x;
+        figure.pos.y = curFigurePos.y;
+        figure.rot   = curFigurePos.r;
       }
     }
   }

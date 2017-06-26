@@ -8,25 +8,16 @@ namespace GameGUI.States
   {
     public override string GetSceneName() { return "PlayerScore"; }
     public override EGameStateType GetStateType() { return EGameStateType.PLAYER_SCORE; }
-    public PlayersScoreParams(int nScore) { m_nScore = nScore; }
-
-    int m_nScore = -1;
   }
 
 
-  public class PlayersScore : GameState
+  public class PlayersScore : GameStateImplTpl<PlayersScoreParams>
   {
     public DynamicScrollView m_scrollView;
 
 
     int               m_nInputIndex = -1;
     GameResults       m_gameResults = null;
-
-    //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.PLAYER_SCORE;
-    }
 
     //-----------------------------------------------------------------------------------
     public override void OnStart()

@@ -8,22 +8,20 @@ namespace GameGUI.States
   //Creation params
   public class WaitingGameParams : GameStateParams
   {
+    public WaitingGameParams(EGameType eRequestedGameType) { m_eRequestedGameType = eRequestedGameType; }
+    public WaitingGameParams() : this(EGameType.UNDEFINED) { }
+
     public override string GetSceneName() { return "WaitingGame"; }
     public override EGameStateType GetStateType() { return EGameStateType.WAITING_GAME; }
-    public WaitingGameParams() {}
+    
+    public EGameType m_eRequestedGameType;
   }
 
 
-  public class WaitingGame : GameState
+  public class WaitingGame : GameStateImplTpl<WaitingGameParams>
   {
 
     public Text m_textPlayersCount;
-
-    //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.WAITING_GAME;
-    }
 
     //-----------------------------------------------------------------------------------
     public override void OnStart()
@@ -48,11 +46,11 @@ namespace GameGUI.States
          if (room.playerCount == MAX_COUNT)
         {
           PhotonNetwork.isMessageQueueRunning = false;
-          Game.instance.ui.SwitchToState(new GamePvp1x1Params());
+          Game.instance.ui.SwitchToState(new GamePvp1x1Params(false));
         }
       }
 
-      m_textPlayersCount.text = nCurrCount.ToString() + "/" + MAX_COUNT.ToString();
+      m_textPlayersCount.text = PhotonNetwork.ServerAddress;// nCurrCount.ToString() + "/" + MAX_COUNT.ToString();
     }
 
     //-----------------------------------------------------------------------------------
@@ -73,7 +71,7 @@ namespace GameGUI.States
     void OnConnected(bool bRes)
     {
       if (bRes)
-        Game.instance.netMan.EnterMatch(EGameType.PvP1x1);
+        Game.instance.netMan.EnterMatch(GetParams().m_eRequestedGameType);
       else
         Disconnect();
     }

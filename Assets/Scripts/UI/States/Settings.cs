@@ -13,19 +13,13 @@ namespace GameGUI.States
 
 
 
-  public class Settings : GameState
+  public class Settings : GameStateImplTpl<SettingsParams>
   {
     public InputField m_inputPlayerName;
 
 
 
     bool m_bNameDirty = false;
-
-    //-----------------------------------------------------------------------------------
-    public override EGameStateType GetStateType()
-    {
-      return EGameStateType.SETTINGS;
-    }
 
     //-----------------------------------------------------------------------------------
     public override void OnStart()
