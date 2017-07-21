@@ -482,7 +482,7 @@ public class PhotonEditor : EditorWindow
             GUILayout.Space(15);
         }
 #if !(UNITY_5_0 || UNITY_5)
-        else if (!InternalEditorUtility.HasAdvancedLicenseOnBuildTarget(BuildTarget.Android) || !InternalEditorUtility.HasAdvancedLicenseOnBuildTarget(BuildTarget.iPhone))
+        else if (!InternalEditorUtility.HasAdvancedLicenseOnBuildTarget(BuildTarget.Android) || !InternalEditorUtility.HasAdvancedLicenseOnBuildTarget(BuildTarget.iOS))
         {
             GUILayout.Label(CurrentLang.MobileExportNoteLabel);
             GUILayout.Space(15);
@@ -515,7 +515,7 @@ public class PhotonEditor : EditorWindow
         GUILayout.Label(CurrentLang.ConverterLabel, EditorStyles.boldLabel, GUILayout.Width(100));
         if (GUILayout.Button(new GUIContent(CurrentLang.StartButton, CurrentLang.UNtoPUNLabel)))
         {
-            PhotonConverter.RunConversion();
+            //PhotonConverter.RunConversion();
         }
 
         GUILayout.EndHorizontal();
@@ -721,7 +721,7 @@ public class PhotonEditor : EditorWindow
             bool convertRPCs = EditorUtility.DisplayDialog(CurrentLang.RpcFoundDialogTitle, CurrentLang.RpcFoundMessage, CurrentLang.RpcReplaceButton, CurrentLang.RpcSkipReplace);
             if (convertRPCs)
             {
-                PhotonConverter.ConvertRpcAttribute("");
+                //PhotonConverter.ConvertRpcAttribute("");
             }
         }
     }

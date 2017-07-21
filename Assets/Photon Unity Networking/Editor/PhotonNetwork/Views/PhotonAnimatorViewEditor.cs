@@ -76,11 +76,13 @@ public class PhotonAnimatorViewEditor : Editor
 	 
     private int GetLayerCount()
     {
-		#if UNITY_5 || UNITY_5_0
-		return (this.m_Controller == null) ? 0 : this.m_Controller.layers.Length;
-		#else
-		return (this.m_Controller == null) ? 0 : this.m_Controller.layerCount;
-		#endif
+#if UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+      return (this.m_Controller == null) ? 0 : this.m_Controller.layerCount;
+#elif UNITY_5 || UNITY_5_0
+      return (this.m_Controller == null) ? 0 : this.m_Controller.layers.Length;
+#else
+      return (m_Animator == null) ? 0 : m_Animator.layerCount;
+#endif
     }
 
 

@@ -8,7 +8,7 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
-#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2
+#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 || UNITY_2017
 #define UNITY_MIN_5_3
 #endif
 
@@ -19,7 +19,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-
+/*
 public class PhotonConverter : Photon.MonoBehaviour
 {
     public static void RunConversion()
@@ -279,7 +279,7 @@ public class PhotonConverter : Photon.MonoBehaviour
                     proxyPort
                     useProxy
                     proxyPassword
-                 */
+                 *//*
             }
 
             //Methods
@@ -292,7 +292,7 @@ public class PhotonConverter : Photon.MonoBehaviour
                     TestConnection
                     TestConnectionNAT
                     HavePublicAddress
-                */
+                *//*
             }
 
             //Overall
@@ -438,4 +438,4 @@ public class PhotonConverter : Photon.MonoBehaviour
         Debug.LogError("Scrip conversion[" + file + "]: " + str);
     }
 
-}
+}*/

@@ -313,9 +313,9 @@ public class PhotonView : Photon.MonoBehaviour
             bool wasInList = PhotonNetwork.networkingPeer.LocalCleanPhotonView(this);
             bool loading = false;
 
-            #if !UNITY_5 || UNITY_5_0 || UNITY_5_1
+            /*#if !UNITY_5 || UNITY_5_0 || UNITY_5_1
             loading = Application.isLoadingLevel;
-            #endif
+            #endif*/
 
             if (wasInList && !loading && this.instantiationId > 0 && !PhotonHandler.AppQuits && PhotonNetwork.logLevel >= PhotonLogLevel.Informational)
             {
